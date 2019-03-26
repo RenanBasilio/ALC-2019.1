@@ -5,7 +5,7 @@
 # > cmake --build .
 
 cmake_minimum_required(VERSION 3.9)
-project(lass
+project(alc
         DESCRIPTION "Linear Algebra Simple Solver."
         VERSION 0.0.0)
 
@@ -26,10 +26,12 @@ include_directories(include)
 set(
     SOURCE_FILES
     src/main.cpp
+    src/SqMatrix.cpp
+    src/Vector.cpp
 )
 
 set(
-    HEADER_FILES 
+    HEADER_FILES
     include/main.hpp
 )
 

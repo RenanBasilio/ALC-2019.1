@@ -1,5 +1,5 @@
 # Name of the built binary
-BINNAME = lass
+BINNAME = alc
 
 # Source code directory
 SRCDIR = src
@@ -12,7 +12,7 @@ BINDIR = build
 
 # C++ Compiler and Flags
 CXX = g++
-CXX_FLAGS = -std=c++11 -Wall
+CXX_FLAGS = -std=c++14 -Wall
 CXX_INCLUDES = -I$(IDIR)
 
 # Obj directory
