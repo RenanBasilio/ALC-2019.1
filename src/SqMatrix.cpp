@@ -60,6 +60,18 @@ const double& SqMatrix::at(const size_t i, const size_t j) const {
     return _data.at(i).at(j);
 }
 
+Vector SqMatrix::operator* (const Vector& v) {
+    if (v.length() != _size) throw size_mismatch("Length of vector does not match size of matrix.");
+
+    Vector r = Vector(_size);
+    for (size_t i = 0; i < _size; i++) {
+        
+    }
+
+    return r;
+    
+}
+
 std::string SqMatrix::toString() const {
     std::stringstream buff;
     

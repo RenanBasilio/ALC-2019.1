@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <initializer_list>
+#include <cstdio>
 
 /**
  * Esta classe representa um vetor de Álgebra Linear.

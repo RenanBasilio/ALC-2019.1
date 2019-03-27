@@ -1,43 +1,8 @@
-# Name of the built binary
-BINNAME = alc
-
-# Source code directory
-SRCDIR = src
-
-# Include directory
-IDIR = include
-
-# Binary directory
-BINDIR = build
-
-# C++ Compiler and Flags
-CXX = g++
-CXX_FLAGS = -std=c++14 -Wall
-CXX_INCLUDES = -I$(IDIR)
-
-# Obj directory
-ODIR = obj
-
-# Additional pkg-config libraries
-LIBS =
-
-_DEPS = main.hpp
-DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
-
-_OBJ = main.o
-OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
-
-.PHONY: dirs
-	@mkdir $(ODIR)
-	@mkdir $(BINDIR)
-
-$(ODIR)/%.o: $(SRCDIR)/%.cpp $(DEPS)
-	$(CXX) -c -o $@ $< $(CXX_INCLUDES) $(CXX_FLAGS)
-
-all: $(OBJ)
-	$(CXX) -o $@ $^  $(CXX_INCLUDES) $(CXX_FLAGS) $(LIBS)
+all:
+	@mkdir -p build
+	g++ -o build/alc src/main.cpp src/SqMatrix.cpp src/Vector.cpp -Iinclude -std=c++14 -Wall
 
 .PHONY: clean
 
 clean:
-	rm -f $(ODIR)/*.o *~ core $(INCDIR)/*~ 
+	rm -rf build 

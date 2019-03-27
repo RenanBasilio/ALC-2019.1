@@ -1,11 +1,16 @@
-# C++ Template Project
+# Trabalhos Algebra Linear Computacional - COC473
 
-This template includes tasks to build a hello world application using CMake 3.9 or higher. It has been tested on Windows and Linux.
+Este repositório contém os trabalhos produzidos para a disciplina COC473 - Álgebra Linear Computacional no período de 2019/1 da UFRJ.
 
-## Build Instructions
+## Instruções para Compilação
 
-CMake and a supported compiler are required in order to build the project.
-
-### VSCode
-
-Invoke the task palette with `ctrl+shift+T` and choose the task `Make` to create the build scripts with CMake, then once again with the task `Build` for the configuration of choice (Debug or Release).
+O projeto pode ser compilado utilizando a aplicação CMake, através dos comandos a seguir no diretório do projeto.
+```
+cmake . -Bbuild
+cmake --build build
+```
+Ou ainda através do Makefile incluso, executando o comando abaixo no diretório do projeto.
+```
+make
+```
+Em ambos os casos será gerado um executável ```alc``` no diretório ```build```, que será criado se não existir.

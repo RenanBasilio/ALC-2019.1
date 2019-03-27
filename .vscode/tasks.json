@@ -56,7 +56,7 @@
                 "kind": "test",
                 "isDefault": true
             },
-            "command": "./build/Debug/lass.exe"
+            "command": "./build/Debug/alc.exe"
         }
     ]
 }

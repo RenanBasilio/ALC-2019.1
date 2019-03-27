@@ -3,6 +3,7 @@
 #include <string>
 #include <initializer_list>
 #include <vector>
+#include <cstdio>
 #include <Vector.hpp>
 
 /**
