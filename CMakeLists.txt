@@ -28,6 +28,7 @@ set(
     src/main.cpp
     src/SqMatrix.cpp
     src/Vector.cpp
+    src/Matrix.cpp
 )
 
 set(
