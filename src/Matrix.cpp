@@ -4,11 +4,11 @@
 #include <iostream>
 #include <algorithm>
 
-Matrix::Matrix(size_t rows, size_t columns) : 
+Matrix::Matrix(const size_t rows, const size_t columns, const double value) : 
     _columns(columns),
     _rows(rows)
 {
-    _data = std::vector<std::vector<double>>(rows, std::vector<double>(columns));
+    _data = std::vector<std::vector<double>>(rows, std::vector<double>(columns, value));
 }
 
 Matrix::Matrix(const std::initializer_list<double> data, size_t rows, size_t columns) :
@@ -19,8 +19,8 @@ Matrix::Matrix(const std::initializer_list<double> data, size_t rows, size_t col
     
     _data = std::vector<std::vector<double>>(_rows, std::vector<double>(_columns, 0.0));
 
-    for (auto d : data) {
-        _data.at(0).push_back(d);
+    for (size_t i = 0; i < data.size(); i++) {
+        at(i, 0) = data.begin()[i];
     }
 }
 
@@ -28,10 +28,10 @@ Matrix::Matrix(const std::initializer_list<std::initializer_list<double>> data, 
     _columns(columns),
     _rows(rows)
 {
-    if (_columns == 0) _columns = data.size();
-    if (_rows == 0) {
-        for (auto r : data) {
-            _rows = std::max(r.size(), _rows);
+    if (_rows == 0) _rows = data.size();
+    if (_columns == 0) {
+        for (auto c : data) {
+            _columns = std::max(c.size(), _columns);
         }
     }
 
@@ -39,13 +39,21 @@ Matrix::Matrix(const std::initializer_list<std::initializer_list<double>> data, 
 
     for (size_t r = 0; r < data.size(); r++) {
         for (size_t c = 0; c < data.begin()[r].size(); c++) {
-            _data.at(r).at(c) = data.begin()[r].begin()[c];
+            at(r, c) = data.begin()[r].begin()[c];
         }
     }
 
 }
 
 Matrix::~Matrix() {
+}
+
+size_t Matrix::ncolumns() const {
+    return _columns;
+}
+
+size_t Matrix::nrows() const {
+    return _rows;
 }
 
 double& Matrix::at(const size_t i, const size_t j) {
@@ -56,12 +64,27 @@ const double& Matrix::at(const size_t i, const size_t j) const {
     return _data.at(i).at(j);
 }
 
+const std::vector<double> Matrix::getRow(const size_t index) const {
+    return _data.at(index);
+}
+
+std::vector<double> Matrix::getColumn(const size_t index) const {
+    std::vector<double> col = std::vector<double>();
+    col.reserve(_rows);
+    
+    for (auto i : _data) {
+        col.push_back(i.at(0));
+    }
+
+    return col;
+}
+
 Matrix Matrix::transpose() const {
     Matrix tr = Matrix(_columns, _rows);
 
     for ( size_t i = 0; i < _rows; i++ ) {
         for (size_t j = 0; j < _columns; j++)
-            tr.at(i, j) = at(j, i);
+            tr.at(j, i) = at(i, j);
     }
 
     return tr;
@@ -86,10 +109,117 @@ std::string Matrix::toString() const {
     return buff.str();
 }
 
-size_t Matrix::ncolumns() const {
-    return _columns;
+Matrix Matrix::operator+(const Matrix& other) const {
+    Matrix res = Matrix(_rows, _columns);
+
+    if (_columns != other._columns && _rows != _columns)
+        throw size_mismatch("Size of Matrix does not match size of other. Operation not applicable.");
+
+    for (size_t i = 0; i < _rows; i++) {
+        for (size_t j = 0; j < _columns; j++) {
+            res.at(i,j) = at(i, j) + other.at(i, j); 
+        }
+    }
+
+    return res;
 }
 
-size_t Matrix::nrows() const {
-    return _rows;
+Matrix Matrix::operator-(const Matrix& other) const {
+    Matrix res = Matrix(_rows, _columns);
+
+    if (_columns != other._columns && _rows != _columns)
+        throw size_mismatch("Size of Matrix does not match size of other. Operation not applicable.");
+
+    for (size_t i = 0; i < _rows; i++) {
+        for (size_t j = 0; j < _columns; j++) {
+            res.at(i,j) = at(i, j) - other.at(i, j); 
+        }
+    }
+
+    return res;
+}
+
+Matrix Matrix::operator*(const Matrix& other) const {
+    Matrix res = Matrix(_rows, other._columns);
+
+    if (_columns != other._rows) throw size_mismatch(
+        "Number of rows in Matrix other does not match number of columns in this. Operation not applicable.");
+
+    Matrix tr = other.transpose();
+
+    for (size_t i = 0; i < _rows; i++) {
+        for (size_t j = 0; j < other._columns; j++) {
+            double val = 0.0;
+            for (size_t k = 0; k < _rows; k++) {
+                val += getRow(i).at(k) * tr.getRow(j).at(k);
+            }
+            res.at(i, j) = val;
+        }
+    }
+
+    return res;
+}
+
+Matrix Matrix::operator+(const double s) const {
+    Matrix res = Matrix(_rows, _columns);
+
+    for (size_t i = 0; i < _rows; i++) {
+        for (size_t j = 0; j < _columns; j++) {
+            res.at(i, j) = at(i, j) + s;
+        }
+    }
+
+    return res;
+}
+
+Matrix operator+(const double s, const Matrix& matrix) {
+    return matrix + s;
+}
+
+Matrix Matrix::operator-(const double s) const {
+    Matrix res = Matrix(_rows, _columns);
+
+    for (size_t i = 0; i < _rows; i++) {
+        for (size_t j = 0; j < _columns; j++) {
+            res.at(i, j) = at(i, j) - s;
+        }
+    }
+
+    return res;
+}
+
+Matrix operator-(const double s, const Matrix& matrix) {
+    return matrix - s;
+}
+
+Matrix Matrix::operator*(const double s) const {
+    Matrix res = Matrix(_rows, _columns);
+
+    for (size_t i = 0; i < _rows; i++) {
+        for (size_t j = 0; j < _columns; j++) {
+            res.at(i, j) = at(i, j) * s;
+        }
+    }
+
+    return res;
+}
+
+Matrix operator*(const double s, const Matrix& matrix) {
+    return matrix * s;
+}
+
+Matrix Matrix::operator/(const double s) const {
+    Matrix res = Matrix(_rows, _columns);
+
+    for (size_t i = 0; i < _rows; i++) {
+        for (size_t j = 0; j < _columns; j++) {
+            res.at(i, j) = at(i, j) / s;
+        }
+    }
+
+    return res;
+}
+
+Matrix operator/(const double s, const Matrix& matrix) {
+    return matrix / s;
 }

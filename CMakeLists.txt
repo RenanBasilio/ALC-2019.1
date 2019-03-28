@@ -22,10 +22,13 @@ include_directories(include)
 # find_package(LIB REQUIRED)
 # include_directories(${LIB_INCLUDE_DIRS})
 
+# GTest
+add_subdirectory(lib/googletest)
+include(GoogleTest)
+
 # Declare source files for build
 set(
     SOURCE_FILES
-    src/main.cpp
     src/Matrix.cpp
 )
 
@@ -37,13 +40,16 @@ set(
 # Set the name of the built executable
 set(EXE_NAME "${PROJECT_NAME}")
 
-add_executable(${EXE_NAME} ${SOURCE_FILES})
+add_executable(${EXE_NAME} src/main.cpp ${SOURCE_FILES})
 set_target_properties(
     ${EXE_NAME} PROPERTIES
     VERSION 0
 )
 
 target_include_directories(${EXE_NAME} PUBLIC ${INCLUDE_DIRECTORIES})
+
+add_executable(Tests test/test.cpp test/Matrix.cpp ${SOURCE_FILES})
+target_link_libraries(Tests gtest gtest_main)
 
 # Link with an external package
 # target_link_libraries(${EXE_NAME} ${LIB_LIBRARIES})
