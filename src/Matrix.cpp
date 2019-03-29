@@ -2,6 +2,7 @@
 #include <Exception.hpp>
 #include <sstream>
 #include <iostream>
+#include <iomanip>
 #include <algorithm>
 
 Matrix::Matrix(const size_t rows, const size_t columns, const double value) : 
@@ -73,7 +74,7 @@ std::vector<double> Matrix::getColumn(const size_t index) const {
     col.reserve(_rows);
     
     for (auto i : _data) {
-        col.push_back(i.at(0));
+        col.push_back(i.at(index));
     }
 
     return col;
@@ -99,7 +100,7 @@ std::string Matrix::toString() const {
         buff << "[ ";
         for (size_t j = 0; j < _columns; j++) {
             if (j > 0) buff << ", ";
-            buff << at(i, j);
+            buff << std::setw(8) << std::setprecision(6) << at(i, j);
         }
         buff << " ]";
         if (i != _rows - 1) buff << "," << std::endl;

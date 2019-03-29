@@ -4,10 +4,8 @@
 # > cmake . -Bbuild -DLIBDIR:STRING=<library directory>
 # > cmake --build .
 
-cmake_minimum_required(VERSION 3.9)
-project(alc
-        DESCRIPTION "Linear Algebra Simple Solver."
-        VERSION 0.0.0)
+cmake_minimum_required(VERSION 3.5)
+project(alc)
 
 enable_language(CXX)
 set(CMAKE_CXX_STANDARD 14)
@@ -21,10 +19,6 @@ include_directories(include)
 # Add an external library to the project
 # find_package(LIB REQUIRED)
 # include_directories(${LIB_INCLUDE_DIRS})
-
-# GTest
-add_subdirectory(lib/googletest)
-include(GoogleTest)
 
 # Declare source files for build
 set(
@@ -48,8 +42,14 @@ set_target_properties(
 
 target_include_directories(${EXE_NAME} PUBLIC ${INCLUDE_DIRECTORIES})
 
+# GTest
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+add_subdirectory(lib/googletest)
+
 add_executable(Tests test/test.cpp test/Matrix.cpp ${SOURCE_FILES})
 target_link_libraries(Tests gtest gtest_main)
+
+add_test( UnitTests Tests )
 
 # Link with an external package
 # target_link_libraries(${EXE_NAME} ${LIB_LIBRARIES})
