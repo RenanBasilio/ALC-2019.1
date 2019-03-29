@@ -1,21 +1,22 @@
 #include <main.hpp>
 
 int main(int argc, char* argv[]) {
-    Matrix test = Matrix( { { 1, 2, 5 }, 
-                            { 3, 4, 6 },
-                            { 7, 6, 1 } });
-    std::cout << "Matriz 1: " << std::endl << test.toString() << std::endl;
-    std::cout << "Transposta: " << std::endl << test.transpose().toString() << std::endl;
+    Matrix mtx1 = Matrix( { {1.2,  3.4, 1.6}, 
+                            {8.4, 0.48, 9.2}, 
+                            {9.3,  3.4, 7.0}, 
+                            {2.0,  3.5, 1.0} } );
+    Matrix mtx2 = Matrix( { {9.8, 6.2}, 
+                            {5.4, 5.2}, 
+                            {2.5, 1.9} } );
 
-    // Test ATA
-    Matrix mult_test = test.transpose() * test;
-    std::cout << "ATA: " << std::endl << mult_test.toString() << std::endl;
+    Matrix res = Matrix( { { 34.12,  28.16}, 
+                           {107.912, 72.056}, 
+                           {127,     88.64},
+                           { 41,     32.5} } );
 
-    Matrix vect = Matrix( {1, 5, 7} );
-    std::cout << "b: " << std::endl << vect.toString() << std::endl;
-    mult_test = test * vect;
-    std::cout << "Ab: " << std::endl << mult_test.toString() << std::endl;
+    Matrix res_ = mtx1 * mtx2;
 
+    std::cout << (res_ == res) << std::endl;
 
     return 0;
 }

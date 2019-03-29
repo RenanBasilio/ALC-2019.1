@@ -39,6 +39,8 @@ public:
     std::vector<double> getColumn(const size_t index) const;
 
     /* Matrix Operations */
+    bool operator== (const Matrix& other) const;
+
     Matrix transpose() const;
 
     Matrix operator* (const Matrix& other) const;

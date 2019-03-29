@@ -4,6 +4,22 @@
 #include <cstring>
 
 
+Matrix generateTestMatrix(size_t rows, size_t columns) {
+
+    Matrix mtx = Matrix(rows, columns);
+
+    std::uniform_real_distribution<double> unif(0, 100);
+    std::default_random_engine re;
+    for (size_t i = 0; i < rows; i++) {
+        for (size_t j = 0; j < columns; j++) {
+            mtx.at(i, j) = unif(re);
+        }
+    }
+    std::cout << "Generated test matrix: " << std::endl << mtx.toString() <<std::endl;
+    return mtx;
+
+}
+
 TEST(MatrixBasics, InitializeZeroMatrix) {
     Matrix mtx = Matrix(5,3);
     for (size_t i = 0; i < 5; i++) {
@@ -58,51 +74,20 @@ TEST(MatrixBasics, InitializeSquareMatrixAndAccessorOperator) {
     }
 }
 
-Matrix generateTestMatrix(size_t rows, size_t columns) {
+TEST(MatrixOperations, Equality) {
+    Matrix mtx1 = Matrix( { {1, 2, 3},
+                            {4, 5, 6},
+                            {7, 8, 9} } );
+    Matrix mtx2 = Matrix( { {1, 2, 3},
+                            {4, 5, 6},
+                            {7, 8, 9} } );
 
-    Matrix mtx = Matrix(rows, columns);
-
-    std::uniform_real_distribution<double> unif(0, 100);
-    std::default_random_engine re;
-    for (size_t i = 0; i < rows; i++) {
-        for (size_t j = 0; j < columns; j++) {
-            mtx.at(i, j) = unif(re);
-        }
-    }
-    std::cout << "Generated test matrix: " << std::endl << mtx.toString() <<std::endl;
-    return mtx;
+    EXPECT_EQ(mtx1, mtx2);
+    ASSERT_TRUE(mtx1 == mtx2);
 
 }
 
-TEST(MatrixOperations, TransposeColumnVector) {
-
-    Matrix mtx = generateTestMatrix(1, 4);
-
-    Matrix tr = mtx.transpose();
-
-    for (size_t i = 0; i < mtx.nrows(); i++) {
-        for (size_t j = 0; j < mtx.ncolumns(); j++) {
-            EXPECT_EQ(mtx.at(i, j), tr.at(j, i));
-        }
-        EXPECT_EQ(mtx.getRow(i), tr.getColumn(i));
-    }
-}
-
-TEST(MatrixOperations, TransposeSquareMatrix) {
-
-    Matrix mtx = generateTestMatrix(5, 5);
-
-    Matrix tr = mtx.transpose();
-
-    for (size_t i = 0; i < mtx.nrows(); i++) {
-        for (size_t j = 0; j < mtx.ncolumns(); j++) {
-            EXPECT_EQ(mtx.at(i, j), tr.at(j, i));
-        }
-        EXPECT_EQ(mtx.getRow(i), tr.getColumn(i));
-    }
-}
-
-TEST(MatrixOperations, TransposeMatrix) {
+TEST(MatrixOperations, Transpose) {
 
     Matrix mtx = generateTestMatrix(3, 7);
 
@@ -115,3 +100,86 @@ TEST(MatrixOperations, TransposeMatrix) {
         EXPECT_EQ(mtx.getRow(i), tr.getColumn(i));
     }
 }
+
+TEST(MatrixOperations, AddScalar) {
+    Matrix mtx1 = generateTestMatrix(3, 7);
+
+    Matrix mtx2 = mtx1;
+
+    for ( size_t i = 0; i < mtx1.nrows(); i++ ) {
+        for ( size_t j = 0; j < mtx1.ncolumns(); j++) {
+            mtx2.at(i, j) += 2;
+        }
+    }
+
+    EXPECT_EQ(mtx2, (mtx1 + 2));
+    EXPECT_EQ(mtx2, (2 + mtx1));
+    EXPECT_EQ((2 + mtx1), (mtx1 + 2));
+}
+
+TEST(MatrixOperations, SubtractScalar) {
+    Matrix mtx1 = generateTestMatrix(3, 7);
+
+    Matrix mtx2 = mtx1;
+
+    for ( size_t i = 0; i < mtx1.nrows(); i++ ) {
+        for ( size_t j = 0; j < mtx1.ncolumns(); j++) {
+            mtx2.at(i, j) -= 2;
+        }
+    }
+
+    EXPECT_EQ(mtx2, (mtx1 - 2));
+    EXPECT_EQ(mtx2, (2 - mtx1));
+    EXPECT_EQ((2 - mtx1), (mtx1 - 2));
+}
+
+TEST(MatrixOperations, MultiplyScalar) {
+    Matrix mtx1 = generateTestMatrix(3, 7);
+
+    Matrix mtx2 = mtx1;
+
+    for ( size_t i = 0; i < mtx1.nrows(); i++ ) {
+        for ( size_t j = 0; j < mtx1.ncolumns(); j++) {
+            mtx2.at(i, j) *= 2;
+        }
+    }
+
+    EXPECT_EQ(mtx2, (mtx1 * 2));
+    EXPECT_EQ(mtx2, (2 * mtx1));
+    EXPECT_EQ((2 * mtx1), (mtx1 * 2));
+}
+
+TEST(MatrixOperations, DivideScalar) {
+    Matrix mtx1 = generateTestMatrix(3, 7);
+
+    Matrix mtx2 = mtx1;
+    Matrix mtx3 = mtx1;
+
+    for ( size_t i = 0; i < mtx1.nrows(); i++ ) {
+        for ( size_t j = 0; j < mtx1.ncolumns(); j++) {
+            mtx2.at(i, j) = mtx2.at(i, j) / 2;
+            mtx3.at(i, j) = 2 / mtx3.at(i, j);
+        }
+    }
+
+    EXPECT_EQ(mtx2, (mtx1 / 2));
+    EXPECT_EQ(mtx3, (2 / mtx1));
+}
+
+TEST(MatrixOperations, MultiplyMatrix) {
+    Matrix mtx1 = Matrix( { {1,  2, 7}, 
+                            {9, 15, 4}, 
+                            {2, 28, 6}, 
+                            {66,10, 0} } );
+    Matrix mtx2 = Matrix( { {1, 1}, 
+                            {2, 8}, 
+                            {4, 2} } );
+
+    Matrix res_expected = Matrix( { { 33, 31}, 
+                                    { 55, 137}, 
+                                    { 82, 238},
+                                    { 86, 146} } );
+
+    EXPECT_EQ(res_expected, (mtx1 * mtx2));
+}
+

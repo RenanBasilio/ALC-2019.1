@@ -110,6 +110,13 @@ std::string Matrix::toString() const {
     return buff.str();
 }
 
+bool Matrix::operator== (const Matrix& other) const {
+    if ( other._columns == _columns && 
+         other._rows == _rows &&
+         other._data == _data) return true;
+    else return false;
+}
+
 Matrix Matrix::operator+(const Matrix& other) const {
     Matrix res = Matrix(_rows, _columns);
 
@@ -151,7 +158,7 @@ Matrix Matrix::operator*(const Matrix& other) const {
     for (size_t i = 0; i < _rows; i++) {
         for (size_t j = 0; j < other._columns; j++) {
             double val = 0.0;
-            for (size_t k = 0; k < _rows; k++) {
+            for (size_t k = 0; k < _columns; k++) {
                 val += getRow(i).at(k) * tr.getRow(j).at(k);
             }
             res.at(i, j) = val;
