@@ -4,6 +4,7 @@
 #include <iostream>
 #include <iomanip>
 #include <algorithm>
+#include <cmath>
 
 Matrix::Matrix(const size_t rows, const size_t columns, const double value) : 
     _columns(columns),
@@ -111,10 +112,12 @@ std::string Matrix::toString() const {
 }
 
 bool Matrix::operator== (const Matrix& other) const {
-    if ( other._columns == _columns && 
-         other._rows == _rows &&
-         other._data == _data) return true;
-    else return false;
+    for ( size_t i = 0; i < _rows; i++) {
+        for (size_t j = 0; j < _columns; j++) {
+            if ( std::fabs(at(i, j) - other.at(i, j)) >= 1E-3 ) return false;
+        }
+    }
+    return true;
 }
 
 Matrix Matrix::operator+(const Matrix& other) const {

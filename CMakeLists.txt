@@ -24,6 +24,7 @@ include_directories(include)
 set(
     SOURCE_FILES
     src/Matrix.cpp
+    src/LinearAlgebra.cpp
 )
 
 set(
@@ -46,7 +47,7 @@ target_include_directories(${EXE_NAME} PUBLIC ${INCLUDE_DIRECTORIES})
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 add_subdirectory(lib/googletest)
 
-add_executable(Tests test/Matrix.cpp ${SOURCE_FILES})
+add_executable(Tests test/Matrix.cpp test/LinearAlgebra.cpp ${SOURCE_FILES})
 target_link_libraries(Tests gtest gtest_main)
 
 add_test( UnitTests Tests )

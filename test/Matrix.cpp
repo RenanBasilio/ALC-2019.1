@@ -82,7 +82,6 @@ TEST(MatrixOperations, Equality) {
                             {4, 5, 6},
                             {7, 8, 9} } );
 
-    EXPECT_EQ(mtx1, mtx2);
     ASSERT_TRUE(mtx1 == mtx2);
 
 }
