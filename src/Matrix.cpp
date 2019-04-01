@@ -229,5 +229,13 @@ Matrix Matrix::operator/(const double s) const {
 }
 
 Matrix operator/(const double s, const Matrix& matrix) {
-    return matrix / s;
+    Matrix res = Matrix(matrix._rows, matrix._columns);
+
+    for (size_t i = 0; i < matrix._rows; i++) {
+        for (size_t j = 0; j < matrix._columns; j++) {
+            res.at(i, j) = s / matrix.at(i, j);
+        }
+    }
+
+    return res;
 }
