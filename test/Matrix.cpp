@@ -15,7 +15,7 @@ Matrix generateTestMatrix(size_t rows, size_t columns) {
             mtx.at(i, j) = unif(re);
         }
     }
-    std::cout << "Generated test matrix: " << std::endl << mtx.toString() <<std::endl;
+    std::cout << "Generated test matrix: " << std::endl << mtx <<std::endl;
     return mtx;
 
 }
@@ -24,18 +24,18 @@ TEST(MatrixBasics, InitializeZeroMatrix) {
     Matrix mtx = Matrix(5,3);
     for (size_t i = 0; i < 5; i++) {
         for (size_t j = 0; j < 3; j++) {
-            EXPECT_EQ(mtx.at(i, j), 0) << mtx.toString();
+            EXPECT_EQ(mtx.at(i, j), 0) << mtx;
         }
     }
 }
 
 TEST(MatrixBasics, InitializeColumnVector) {
     double val[4] = {1.0, 8.5, 4.7, 7.2};
-    Matrix mtx = Matrix({val[0], val[1], val[2], val[3]});
+    Matrix mtx = Matrix({{val[0]}, {val[1]}, {val[2]}, {val[3]}});
     for (size_t i = 0; i < 4; i++) {
-        EXPECT_EQ(mtx.at(i, 0), val[i]) << mtx.toString();
-        EXPECT_EQ(mtx.at(i), val[i]) << mtx.toString();
-        EXPECT_EQ(std::memcmp(mtx.getColumn(0).data(), val, sizeof(val)), 0) << mtx.toString();
+        EXPECT_EQ(mtx.at(i, 0), val[i]) << mtx;
+        EXPECT_EQ(mtx.at(i), val[i]) << mtx;
+        EXPECT_EQ(std::memcmp(mtx.getColumn(0).data(), val, sizeof(val)), 0) << mtx;
     }
 }
 
@@ -43,8 +43,8 @@ TEST(MatrixBasics, InitializeRowVector) {
     double val[7] = {1.0, 8.5, 4.7, 7.2, 9.6, 15.4, -5.4};
     Matrix mtx = Matrix({{val[0], val[1], val[2], val[3], val[4], val[5], val[6]}});
     for (size_t i = 0; i < 7; i++) {
-        EXPECT_EQ(mtx.at(0, i), val[i]) << mtx.toString();
-        EXPECT_EQ(std::memcmp(mtx.getRow(0).data(), val, sizeof(val)), 0) << mtx.toString();
+        EXPECT_EQ(mtx.at(0, i), val[i]) << mtx;
+        EXPECT_EQ(std::memcmp(mtx.getRow(0).data(), val, sizeof(val)), 0) << mtx;
     }
 }
 
@@ -69,12 +69,12 @@ TEST(MatrixBasics, InitializeSquareMatrixAndAccessorOperator) {
     EXPECT_EQ(mtx.nrows(), 5);
     for (size_t i = 0; i < 5; i++) {
         for (size_t j = 0; j < 5; j++) {
-            EXPECT_EQ(mtx.at(i, j), val.at(i).at(j)) << "i = " << i << ", j = " << j << ", matrix:" << std::endl << mtx.toString();
+            EXPECT_EQ(mtx.at(i, j), val.at(i).at(j)) << "i = " << i << ", j = " << j << ", matrix:" << std::endl << mtx;
         }
     }
 }
 
-TEST(MatrixOperations, Equality) {
+TEST(MatrixBasics, Equality) {
     Matrix mtx1 = Matrix( { {1, 2, 3},
                             {4, 5, 6},
                             {7, 8, 9} } );
@@ -84,6 +84,73 @@ TEST(MatrixOperations, Equality) {
 
     ASSERT_TRUE(mtx1 == mtx2);
 
+}
+
+TEST(MatrixBasics, InsertRow) {
+    Matrix mtx = Matrix(  { {1, 2, 3},
+                            {4, 5, 6},
+                            {7, 8, 9} } );
+    Matrix exp = Matrix(  { {1, 2, 3},
+                            {4, 5, 6},
+                            {7, 8, 9},
+                            {10, 11, 12} } );
+    mtx.insertRow(3, {10, 11, 12});
+
+    EXPECT_EQ(mtx, exp);
+}
+
+TEST(MatrixBasics, InsertColumn) {
+    Matrix mtx = Matrix(  { {1, 2, 3},
+                            {4, 5, 6},
+                            {7, 8, 9} } );
+    Matrix exp = Matrix(  { {1, 2, 3, 10},
+                            {4, 5, 6, 11},
+                            {7, 8, 9, 12}} );
+
+    mtx.insertColumn(3, {10, 11, 12});
+
+    EXPECT_EQ(mtx, exp);
+}
+
+TEST(MatrixBasics, RemoveRow) {
+    Matrix mtx = Matrix(  { {1, 2, 3},
+                            {4, 5, 6},
+                            {7, 8, 9},
+                            {10, 11, 12} } );
+    Matrix exp = Matrix(  { {1, 2, 3},
+                            {4, 5, 6},
+                            {7, 8, 9} } );
+    
+    mtx.removeRow(3);
+
+    EXPECT_EQ(mtx, exp);
+}
+
+TEST(MatrixBasics, RemoveColumn) {
+    Matrix mtx = Matrix(  { {1, 2, 3, 10},
+                            {4, 5, 6, 11},
+                            {7, 8, 9, 12}} );
+    Matrix exp = Matrix(  { {1, 2, 3},
+                            {4, 5, 6},
+                            {7, 8, 9} } );
+    
+    mtx.removeColumn(3);
+
+    EXPECT_EQ(mtx, exp);
+}
+
+TEST(MatrixBasics, SwapRow) {
+    Matrix mtx = Matrix(  { {1, 2, 3},
+                            {4, 5, 6},
+                            {7, 8, 9} } );
+    Matrix exp = Matrix(  { {1, 2, 3},
+                            {7, 8, 9},
+                            {4, 5, 6}, } );
+    
+    mtx.swapRow(1, 2);
+
+    EXPECT_EQ(mtx, exp);
+    
 }
 
 TEST(MatrixOperations, Transpose) {

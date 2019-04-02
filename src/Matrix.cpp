@@ -13,20 +13,7 @@ Matrix::Matrix(const size_t rows, const size_t columns, const double value) :
     _data = std::vector<std::vector<double>>(rows, std::vector<double>(columns, value));
 }
 
-Matrix::Matrix(const std::initializer_list<double> data, size_t rows, size_t columns) :
-    _columns(columns),
-    _rows(rows)
-{
-    if (_rows == 0) _rows = data.size();
-    
-    _data = std::vector<std::vector<double>>(_rows, std::vector<double>(_columns, 0.0));
-
-    for (size_t i = 0; i < data.size(); i++) {
-        at(i, 0) = data.begin()[i];
-    }
-}
-
-Matrix::Matrix(const std::initializer_list<std::initializer_list<double>> data, size_t rows, size_t columns) :
+Matrix::Matrix(const std::vector<std::vector<double>> data, size_t rows, size_t columns) :
     _columns(columns),
     _rows(rows)
 {
@@ -81,6 +68,47 @@ std::vector<double> Matrix::getColumn(const size_t index) const {
     return col;
 }
 
+void Matrix::insertRow(const size_t position, const std::vector<double> l) {
+    _data.insert(_data.begin()+position, l);
+    _rows++;
+}
+
+void Matrix::insertColumn(const size_t position, const std::vector<double> l) {
+    for (size_t i = 0; i < _rows; i++) {
+        _data.at(i).insert(_data.at(i).begin()+position, l.at(i));
+    }
+    _columns++;
+}
+
+std::vector<double> Matrix::removeRow(const size_t position) {
+    std::vector<double> vr = _data.at(position);
+    _data.erase(_data.begin()+position);
+    _rows--;
+    return vr;
+}
+
+std::vector<double> Matrix::removeColumn(const size_t position) {
+    std::vector<double> vr;
+    for (size_t i = 0; i < _rows; i++) {
+        vr.push_back(_data.at(i).at(position));
+        _data.at(i).erase(_data.at(i).begin()+position);
+    }
+    _columns--;
+    return vr;
+}
+
+void Matrix::swapRow(const size_t pos1, size_t pos2) {
+    std::vector<double> tmp;
+
+    if (pos1 == pos2) return;
+
+    tmp = getRow(pos1);
+
+    insertRow(pos1, removeRow(pos2));
+    removeRow(pos1+1);
+    insertRow(pos2, tmp);
+}
+
 Matrix Matrix::transpose() const {
     Matrix tr = Matrix(_columns, _rows);
 
@@ -92,7 +120,7 @@ Matrix Matrix::transpose() const {
     return tr;
 }
 
-std::string Matrix::toString() const {
+Matrix::operator std::string() const {
     std::stringstream buff;
 
     buff << "[ ";
@@ -241,4 +269,17 @@ Matrix operator/(const double s, const Matrix& matrix) {
     }
 
     return res;
+}
+
+std::ostream& operator<< (std::ostream& s, const Matrix& mtx) {
+    s << std::string(mtx);
+    return s;
+}
+
+Matrix Matrix::Identity(const size_t size) {
+    Matrix mtx = Matrix(size, size, 0.0);
+    for (size_t i = 0; i < size; i++) {
+        mtx.at(i, i) = 1;
+    }
+    return mtx;
 }
