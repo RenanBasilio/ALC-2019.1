@@ -18,6 +18,7 @@ private:
     size_t _columns, _rows;
 
 public:
+    Matrix() {};
     Matrix(const size_t rows, const size_t columns = 1, const double value = 0.0);
     Matrix(const std::vector<std::vector<double>> data, size_t rows = 0, size_t columns = 0);
 
