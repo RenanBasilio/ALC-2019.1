@@ -31,7 +31,15 @@ Matrix computeInverse ( Matrix m );
  * @param aug A matriz aumentada.
  * @return O vetor x.
  */
-Matrix solveRetroSubstitution ( const Matrix& aug );
+Matrix solveBackSubstitution ( const Matrix& aug );
+
+/**
+ * Resolve um sistema Ax=b por substituição para frente.
+ * 
+ * @param aug A matriz aumentada.
+ * @return O vetor x.
+ */
+Matrix solveForwardSubstitution ( const Matrix& aug );
 
 /**
  * Resolve um sistema Ax=b por retro-substituição.
@@ -40,7 +48,16 @@ Matrix solveRetroSubstitution ( const Matrix& aug );
  * @param b Um vetor de dimensão igual à da matriz A.
  * @return O vetor solução do sistema.
  */
-Matrix solveRetroSubstitution ( Matrix A, const Matrix& b );
+Matrix solveBackSubstitution ( Matrix A, const Matrix& b );
+
+/**
+ * Resolve um sistema Ax=b por substituição para frente.
+ * 
+ * @param A Uma matriz quadrada.
+ * @param b Um vetor de dimensão igual à da matriz A.
+ * @return O vetor solução do sistema.
+ */
+Matrix solveForwardSubstitution ( Matrix A, const Matrix& b );
 
 /**
  * Resolve um sistema linear por eliminação de gauss.

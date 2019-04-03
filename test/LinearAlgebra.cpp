@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <LinearAlgebra.hpp>
 
-TEST(LinearAlgebra, RetroSubstitution) {
+TEST(LinearAlgebra, BackSubstitution) {
     Matrix A = Matrix({
         {5, -4, 1, 0},
         {0, 14.0/5.0, -16.0/5.0, 1},
@@ -11,23 +11,22 @@ TEST(LinearAlgebra, RetroSubstitution) {
     Matrix b = Matrix({{-1}, {6.0/5.0}, {18.0/7.0}, {6}});
     Matrix exp = Matrix({{5.8}, {10.2}, {10.8}, {7.2}});
 
-    Matrix x = solveRetroSubstitution(A, b);
+    Matrix x = solveBackSubstitution(A, b);
 
     EXPECT_EQ(x, exp);
 }
 
-TEST(LinearAlgebra, RetroSubstitutionAugmented) {
-    Matrix mtx = Matrix({
-        {5, -4, 1, 0, -1},
-        {0, 14.0/5.0, -16.0/5.0, 1, 6.0/5.0},
-        {0, 0, 15.0/7.0, -20.0/7.0, 18.0/7.0},
-        {0, 0, 0, 35.0/42.0, 6}
+TEST(LinearAlgebra, ForwardSubstitution) {
+    Matrix A = Matrix({
+        {  3,  0,  0,  0 },
+        { -1,  1,  0,  0 },
+        {  3, -2, -1,  0 },
+        {  1, -2,  6,  2 }
     });
-    Matrix exp = Matrix({{5.8}, {10.2}, {10.8}, {7.2}});
+    Matrix b = Matrix({{5}, {6}, {4}, {2}});
+    Matrix exp = Matrix({{5.0/3.0}, {23.0/3.0}, {-43.0/3.0}, {305.0/6.0}});
 
-    Matrix x = solveRetroSubstitution(mtx);
-
-    std::cout << mtx << std::endl;
+    Matrix x = solveForwardSubstitution(A, b);
 
     EXPECT_EQ(x, exp);
 }
@@ -86,4 +85,22 @@ TEST(LinearAlgebra, Inverse) {
 
     EXPECT_EQ(x, inv);
     EXPECT_EQ(mtx*x, Matrix::Identity(4));
+}
+
+TEST(LinearAlgebra, LUDecomposition) {
+    Matrix mtx = Matrix({
+        { 5, -4,  1,  0},
+        {-4,  6, -4,  1},
+        { 1, -4,  6, -4},
+        { 0,  1, -4,  5}
+    });
+    Matrix v = Matrix({
+        {-1}, {2}, {1}, {3}
+    });
+
+    Matrix exp = Matrix({{5.8}, {10.2}, {10.8}, {7.2}});
+
+    Matrix x = solveLUDecomp(mtx, v);
+
+    EXPECT_EQ(x, exp);
 }
