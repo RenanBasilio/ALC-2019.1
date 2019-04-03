@@ -85,4 +85,5 @@ TEST(LinearAlgebra, Inverse) {
     Matrix x = computeInverse(mtx);
 
     EXPECT_EQ(x, inv);
+    EXPECT_EQ(mtx*x, Matrix::Identity(4));
 }
