@@ -85,3 +85,12 @@ Matrix solveGaussJordanElim ( Matrix A, const Matrix& b );
  * @return O vetor solução do sistema.
  */
 Matrix solveLUDecomp ( Matrix A, const Matrix& b );
+
+/**
+ * Resolve um sistema linear por decomposição de Cholesky.
+ * 
+ * @param A Uma matriz quadrada.
+ * @param b Um vetor de dimensão igual à da matriz A.
+ * @return O vetor solução do sistema.
+ */
+Matrix solveCholeskyDecomp ( Matrix A, const Matrix& b );

@@ -63,6 +63,7 @@ Matrix transformMatrix( Form t, Matrix& A) {
         }
         
         Matrix m_t = Matrix::Identity(A.nrows());
+
         switch (t) {
             case Form::Identity:
                 m_t.at(i, i) = 1 / A.at(i, i);
@@ -77,13 +78,13 @@ Matrix transformMatrix( Form t, Matrix& A) {
                     m_t.at(j, i) = (-1)*(A.at(j, i) / A.at(i, i));
                 }
                 break;
+            default:
+                throw new std::invalid_argument("Conversion to this form is not available.");
         }
         
         A = m_t * A;
         m = m_t * m;
     }
-
-    std::cout << A << std::endl;
 
     return m;
 }
@@ -130,4 +131,30 @@ Matrix solveLUDecomp( Matrix A, const Matrix& b){
     Matrix y = solveForwardSubstitution(L, b);
 
     return solveBackSubstitution(A, y);
+}
+
+Matrix solveCholeskyDecomp( Matrix A, const Matrix& b) {
+    if (A.ncolumns() != A.nrows()) 
+        throw new size_mismatch("Matrix A is not a square matrix.");
+
+    Matrix L = Matrix::Identity(A.nrows());
+    for (int i = 0; i < A.nrows(); i++) {
+        double sum = 0.0;
+        for (int j = 0; j < i; j++) {
+            sum += std::pow(L.at(i, j), 2);
+        }
+        L.at(i,i) = std::sqrt(A.at(i,i) - sum);
+
+        for (int j = i; j < A.nrows(); j++) {
+            sum = 0.0;
+            for (int k = 0; k < i; k++) {
+                sum += L.at(i, k)*L.at(j, k);
+            }
+            L.at(j,i) = ( A.at(i, j) - sum ) / L.at(i,i);
+        }
+    }
+
+    Matrix y = solveForwardSubstitution(L, b);  // Ly = b
+
+    return solveBackSubstitution(L.transpose(), y);         // Ux = LTx = y
 }

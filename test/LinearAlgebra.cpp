@@ -104,3 +104,21 @@ TEST(LinearAlgebra, LUDecomposition) {
 
     EXPECT_EQ(x, exp);
 }
+
+TEST(LinearAlgebra, CholeskyDecomposition) {
+    Matrix mtx = Matrix({
+        { 5, -4,  1,  0},
+        {-4,  6, -4,  1},
+        { 1, -4,  6, -4},
+        { 0,  1, -4,  5}
+    });
+    Matrix v = Matrix({
+        {-1}, {2}, {1}, {3}
+    });
+
+    Matrix exp = Matrix({{5.8}, {10.2}, {10.8}, {7.2}});
+
+    Matrix x = solveCholeskyDecomp(mtx, v);
+
+    EXPECT_EQ(x, exp);
+}
