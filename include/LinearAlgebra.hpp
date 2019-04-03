@@ -49,7 +49,7 @@ Matrix solveRetroSubstitution ( Matrix A, const Matrix& b );
  * @param b Um vetor de dimensão igual à da matriz A.
  * @return O vetor solução do sistema.
  */
-Matrix solveGaussElim ( const Matrix& A, const Matrix& b );
+Matrix solveGaussElim ( Matrix A, const Matrix& b );
 
 /**
  * Resolve um sistema linear por eliminação de gauss-jordan.
@@ -58,7 +58,7 @@ Matrix solveGaussElim ( const Matrix& A, const Matrix& b );
  * @param b Um vetor de dimensão igual à da matriz A.
  * @return O vetor solução do sistema.
  */
-Matrix solveGaussJordanElim ( const Matrix& A, const Matrix& b );
+Matrix solveGaussJordanElim ( Matrix A, const Matrix& b );
 
 /**
  * Resolve um sistema linear por decomposição LU.
@@ -67,4 +67,4 @@ Matrix solveGaussJordanElim ( const Matrix& A, const Matrix& b );
  * @param b Um vetor de dimensão igual à da matriz A.
  * @return O vetor solução do sistema.
  */
-Matrix solveLUDecomp ( const Matrix& A, const Matrix& b );
+Matrix solveLUDecomp ( Matrix A, const Matrix& b );

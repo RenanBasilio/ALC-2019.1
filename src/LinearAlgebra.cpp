@@ -67,40 +67,37 @@ Matrix transformMatrix( Form t, Matrix& A) {
 }
 
 // Solve an Ax=b system by gaussian elimination, returning x
-Matrix solveGaussElim ( const Matrix& A, const Matrix& b) {
+Matrix solveGaussElim ( Matrix A, const Matrix& b) {
     if (A.ncolumns() != A.nrows()) 
         throw new size_mismatch("Matrix A is not a square matrix.");
     if (A.ncolumns() != b.nrows()) 
         throw new size_mismatch("Height of matrix A does not match height of vector.");
 
-    Matrix _A = A;
-    Matrix m = transformMatrix(Form::RowEchelon, _A);
+    Matrix m = transformMatrix(Form::RowEchelon, A);
 
-    return solveRetroSubstitution(_A, m*b);
+    return solveRetroSubstitution(A, m*b);
 }
 
-Matrix solveGaussJordanElim ( const Matrix& A, const Matrix& b) {
+Matrix solveGaussJordanElim ( Matrix A, const Matrix& b) {
     if (A.ncolumns() != A.nrows()) 
         throw new size_mismatch("Matrix A is not a square matrix.");
     if (A.ncolumns() != b.nrows()) 
         throw new size_mismatch("Height of matrix A does not match height of vector.");
 
-    Matrix _A = A;
-    Matrix m = transformMatrix(Form::Diagonal, _A);
+    Matrix m = transformMatrix(Form::Diagonal, A);
 
-    return solveRetroSubstitution(_A, m*b);
+    return solveRetroSubstitution(A, m*b);
 }
 
-Matrix solveLUDecomp( const Matrix& A, const Matrix& b){
+Matrix solveLUDecomp( Matrix A, const Matrix& b){
     if (A.ncolumns() != A.nrows()) 
         throw new size_mismatch("Matrix A is not a square matrix.");
     if (A.ncolumns() != b.nrows()) 
         throw new size_mismatch("Height of matrix A does not match height of vector.");
 
-    Matrix _A = A;
-    Matrix m = transformMatrix(Form::Diagonal, _A);
+    Matrix m = transformMatrix(Form::Diagonal, A);
 
-    return solveRetroSubstitution(_A, m*b);
+    return solveRetroSubstitution(A, m*b);
 }
 
 Matrix computeInverse( Matrix m ) {
