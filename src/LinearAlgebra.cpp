@@ -4,15 +4,15 @@
 #include <cmath>
 #include <cstdarg>
 
-Matrix solveRetroSubstitution( const Matrix& aug ) {
-    if ( aug.ncolumns() != aug.nrows() + 1 ) throw new size_mismatch("Invalid matrix size for forward substitution operation.");
+Matrix solveBackSubstitution( const Matrix& aug ) {
+    if ( aug.ncolumns() != aug.nrows() + 1 ) throw new size_mismatch("Invalid matrix size for retro substitution operation.");
 
     Matrix x = Matrix(aug.nrows());
 
     for (int i = aug.nrows() - 1; i >= 0; i--)
     {
         double calc = 0.0;
-        for (size_t j = aug.ncolumns() - 2; j > i; j--) {
+        for (int j = aug.ncolumns() - 2; j > i; j--) {
             calc += aug.at(i, j) * x.at(j);
         }
         x.at(i) = (aug.at(i, aug.ncolumns() - 1) - calc) / aug.at(i, i);
@@ -21,9 +21,31 @@ Matrix solveRetroSubstitution( const Matrix& aug ) {
     return x;
 }
 
-Matrix solveRetroSubstitution( Matrix A, const Matrix& b) {
+Matrix solveBackSubstitution( Matrix A, const Matrix& b) {
     A.insertColumn(A.ncolumns(), b.getColumn(0));
-    return solveRetroSubstitution(A);
+    return solveBackSubstitution(A);
+}
+
+Matrix solveForwardSubstitution( const Matrix& aug ) {
+    if ( aug.ncolumns() != aug.nrows() + 1 ) throw new size_mismatch("Invalid matrix size for forward substitution operation.");
+
+    Matrix x = Matrix(aug.nrows());
+
+    for (int i = 0; i < aug.nrows(); i++)
+    {
+        double calc = 0.0;
+        for (int j = 0; j < i; j++) {
+            calc += aug.at(i, j) * x.at(j);
+        }
+        x.at(i) = (aug.at(i, aug.ncolumns() - 1) - calc) / aug.at(i, i);
+    }
+
+    return x;
+}
+
+Matrix solveForwardSubstitution( Matrix A, const Matrix& b) {
+    A.insertColumn(A.ncolumns(), b.getColumn(0));
+    return solveForwardSubstitution(A);
 }
 
 Matrix transformMatrix( Form t, Matrix& A) {
@@ -75,7 +97,7 @@ Matrix solveGaussElim ( Matrix A, const Matrix& b) {
 
     Matrix m = transformMatrix(Form::RowEchelon, A);
 
-    return solveRetroSubstitution(A, m*b);
+    return solveBackSubstitution(A, m*b);
 }
 
 Matrix solveGaussJordanElim ( Matrix A, const Matrix& b) {
@@ -86,18 +108,7 @@ Matrix solveGaussJordanElim ( Matrix A, const Matrix& b) {
 
     Matrix m = transformMatrix(Form::Diagonal, A);
 
-    return solveRetroSubstitution(A, m*b);
-}
-
-Matrix solveLUDecomp( Matrix A, const Matrix& b){
-    if (A.ncolumns() != A.nrows()) 
-        throw new size_mismatch("Matrix A is not a square matrix.");
-    if (A.ncolumns() != b.nrows()) 
-        throw new size_mismatch("Height of matrix A does not match height of vector.");
-
-    Matrix m = transformMatrix(Form::Diagonal, A);
-
-    return solveRetroSubstitution(A, m*b);
+    return solveBackSubstitution(A, m*b);
 }
 
 Matrix computeInverse( Matrix m ) {
@@ -107,4 +118,16 @@ Matrix computeInverse( Matrix m ) {
     Matrix i = transformMatrix(Form::Identity, m);
 
     return i;
+}
+
+Matrix solveLUDecomp( Matrix A, const Matrix& b){
+    if (A.ncolumns() != A.nrows()) 
+        throw new size_mismatch("Matrix A is not a square matrix.");
+    if (A.ncolumns() != b.nrows()) 
+        throw new size_mismatch("Height of matrix A does not match height of vector.");
+
+    Matrix L = computeInverse(transformMatrix(Form::RowEchelon, A));
+    Matrix y = solveForwardSubstitution(L, b);
+
+    return solveBackSubstitution(A, y);
 }
