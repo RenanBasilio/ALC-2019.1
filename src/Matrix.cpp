@@ -129,7 +129,7 @@ Matrix::operator std::string() const {
         buff << "[ ";
         for (size_t j = 0; j < _columns; j++) {
             if (j > 0) buff << ", ";
-            buff << std::setw(8) << std::setprecision(6) << at(i, j);
+            buff << std::setw(8) << std::setprecision(5) << at(i, j);
         }
         buff << " ]";
         if (i != _rows - 1) buff << "," << std::endl;
@@ -282,4 +282,15 @@ Matrix Matrix::Identity(const size_t size) {
         mtx.at(i, i) = 1;
     }
     return mtx;
+}
+
+double computeNorm( const Matrix& vec ) {
+    if ( vec.ncolumns() > 1 ) throw size_mismatch("Norm not available for matrices of width higher than 1.");
+
+    double sum = 0.0;
+    for ( size_t i = 0; i < vec.nrows(); i++ ) {
+        sum += std::pow(vec.at(i), 2);
+    }
+
+    return std::sqrt(sum);
 }

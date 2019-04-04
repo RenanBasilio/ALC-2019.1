@@ -94,3 +94,5 @@ Matrix solveLUDecomp ( Matrix A, const Matrix& b );
  * @return O vetor solução do sistema.
  */
 Matrix solveCholeskyDecomp ( Matrix A, const Matrix& b );
+
+Matrix solveJacobi( const Matrix& A, const Matrix& b, const double tol = 10E-2 );

@@ -155,6 +155,34 @@ Matrix solveCholeskyDecomp( Matrix A, const Matrix& b) {
     }
 
     Matrix y = solveForwardSubstitution(L, b);  // Ly = b
+    std::cout << y << std::endl;
 
     return solveBackSubstitution(L.transpose(), y);         // Ux = LTx = y
+}
+
+Matrix solveJacobi( const Matrix& A, const Matrix& b, const double tol ) {
+    if (A.ncolumns() != A.nrows()) 
+        throw new size_mismatch("Matrix A is not a square matrix.");
+    if (A.ncolumns() != b.nrows()) 
+        throw new size_mismatch("Height of matrix A does not match height of vector.");
+
+    Matrix curr = Matrix( b.nrows(), 1, 1.0 );
+    Matrix prev = Matrix( b.nrows(), 1, 0.0 );
+
+    while ( computeNorm( curr - prev ) / computeNorm( curr ) > tol ) {
+        prev = curr;
+
+        for ( size_t i = 0; i < b.nrows(); i++ ) {
+                            
+            double sum = 0.0;
+            for ( size_t j = 0; j < b.nrows(); j++) {
+                if ( j != i ) sum += A.at(i, j) * prev.at(j);
+            }
+            curr.at(i) = ( b.at(i) - sum ) / A.at(i, i);
+        }
+
+        std::cout << computeNorm( curr - prev ) / computeNorm( curr ) << std::endl;
+    }
+
+    return curr;
 }

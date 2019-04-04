@@ -88,3 +88,5 @@ Matrix operator* (const double s, const Matrix& matrix);
 Matrix operator/ (const double s, const Matrix& matrix);
 
 std::ostream& operator<< (std::ostream& s, const Matrix& mtx);
+
+double computeNorm( const Matrix& vec );
