@@ -247,7 +247,7 @@ bool checkJacobiConvergence ( const Matrix& A, const double tol, std::pair<size_
     double greatest = 0.0;
     bool pass = true;
     for (size_t i = 0; i < A.nrows(); i++) {
-        for (size_t j = 0; j < A.ncolumns(); j++) {
+        for (size_t j = i; j < A.ncolumns(); j++) {
             if ( j != i ) {
                 if ( std::fabs(A.at(i, j)) > tol ) pass = false;
                 if ( std::fabs(A.at(i, j)) > greatest ) {
