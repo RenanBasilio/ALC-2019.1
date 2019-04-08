@@ -15,7 +15,6 @@ Matrix generateTestMatrix(size_t rows, size_t columns) {
             mtx.at(i, j) = unif(re);
         }
     }
-    std::cout << "Generated test matrix: " << std::endl << mtx <<std::endl;
     return mtx;
 
 }

@@ -1,35 +1,28 @@
 #include <main.hpp>
 
 int main(int argc, char* argv[]) {
+
     Matrix mtx = Matrix({
-        { 5, -4,  1,  0},
-        {-4,  6, -4,  1},
-        { 1, -4,  6, -4},
-        { 0,  1, -4,  5}
-    });
-    Matrix v = Matrix({
-        {-1}, {2}, {1}, {3}
+        { 16,  9,  8,  7,  6,  5,  4,  3,  2,  1},
+        {  9, 17,  9,  8,  7,  6,  5,  4,  3,  2},
+        {  8,  9, 18,  9,  8,  7,  6,  5,  4,  3},
+        {  7,  8,  9, 19,  9,  8,  7,  6,  5,  4},
+        {  6,  7,  8,  9, 18,  9,  8,  7,  6,  5},
+        {  5,  6,  7,  8,  9, 17,  9,  8,  7,  6},
+        {  4,  5,  6,  7,  8,  9, 16,  9,  8,  7},
+        {  3,  4,  5,  6,  7,  8,  9, 15,  9,  8},
+        {  2,  3,  4,  5,  6,  7,  8,  9, 14,  9},
+        {  1,  2,  3,  4,  5,  6,  7,  8,  9, 13}
     });
 
-    Matrix mtx2 = Matrix({
-        {2, 5},
-        {3, 1}
-    });
-    Matrix v2 = Matrix({
-        {16}, {11}
-    }, 2, 1);
+    Matrix vec = Matrix({
+        {4}, {0}, {8}, {0}, {12}, {0}, {8}, {0}, {4}, {0}
+    }, 10);
 
-    Matrix t = Matrix({
-        {4, 1, 1},
-        {2, 7, 2},
-        {1, 5, 8}
-    });
-    Matrix v3 = Matrix({
-        {11}, {15}, {23}
-    }, 3, 1);
+    Matrix x1 = solveLUDecomp(mtx, vec);
+    Matrix x2 = solveCholeskyDecomp(mtx, vec);
 
-    std::cout << solveIterative(t, v3, IterativeMethod::Jacobi, 10E-9) << std::endl;
-    std::cout << solveGaussElim(t, v3) << std::endl;
+    std::cout << x1.transpose() << std::endl;
 
     return 0;
 }

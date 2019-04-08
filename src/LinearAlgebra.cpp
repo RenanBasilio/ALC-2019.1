@@ -156,7 +156,6 @@ Matrix solveCholeskyDecomp( Matrix A, const Matrix& b) {
     }
 
     Matrix y = solveForwardSubstitution(L, b);  // Ly = b
-    std::cout << y << std::endl;
 
     return solveBackSubstitution(L.transpose(), y);         // Ux = LTx = y
 }
