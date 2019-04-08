@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cmath>
 #include <cstdarg>
+#include <utility>
 
 Matrix solveBackSubstitution( const Matrix& aug ) {
     if ( aug.ncolumns() != aug.nrows() + 1 ) throw new size_mismatch("Invalid matrix size for retro substitution operation.");
@@ -242,6 +243,49 @@ double computeGreatestEigenValue( const Matrix& A, const double tol ) {
     return lambda;
 }
 
-Matrix computeEigenMatrix ( const Matrix& A, const double tol ) {
+bool checkJacobiConvergence ( const Matrix& A, const double tol, std::pair<size_t, size_t>& next ) {
+    double greatest = 0.0;
+    bool pass = true;
+    for (size_t i = 0; i < A.nrows(); i++) {
+        for (size_t j = 0; j < A.ncolumns(); j++) {
+            if ( j != i ) {
+                if ( std::fabs(A.at(i, j)) > tol ) pass = false;
+                if ( std::fabs(A.at(i, j)) > greatest ) {
+                    greatest = std::fabs(A.at(i, j));
+                    next.first = i;
+                    next.second = j;
+                }
+            }
+        }
+    }
+    return pass;
+}
 
+
+
+std::pair<Matrix, Matrix> computeEigen ( Matrix A, const double tol ) {
+    if (A.ncolumns() != A.nrows()) 
+        throw new size_mismatch("Matrix A is not a square matrix.");
+    if (!A.isSymmetric())
+        throw new does_not_converge("Matrix A is not symmetric, method won't converge.");
+
+    Matrix X = Matrix::Identity( A.nrows() );
+    std::pair<size_t, size_t> next;
+
+    while ( !checkJacobiConvergence( A, tol, next ) ) {
+        double phi = M_PI_4;
+        if ( A.at(next.first, next.first) != A.at(next.second, next.second) ) {
+            phi = std::atan( 2*A.at(next.first, next.second) / (A.at(next.first, next.first) - A.at(next.second, next.second)) ) / 2;
+        }
+        Matrix P = Matrix::Identity( A.nrows() );
+        P.at(next.first, next.first) = std::cos(phi);
+        P.at(next.second, next.second) = std::cos(phi);
+        P.at(next.first, next.second) = -std::sin(phi);
+        P.at(next.second, next.first) = std::sin(phi);
+
+        A = P.transpose() * A * P;
+        X = X * P;
+    }
+
+    return std::make_pair(A, X);
 }

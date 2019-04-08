@@ -162,3 +162,28 @@ TEST(EigenValues, PowerMethod) {
 
     EXPECT_TRUE(computeGreatestEigenValue(mtx) - 1.539 < 10E-5);
 }
+
+TEST(EigenValues, Jacobi) {
+    Matrix mtx = Matrix({
+        {1.0, 0.2, 0.0},
+        {0.2, 1.0, 0.5},
+        {0.0, 0.5, 1.0}
+    });
+
+    Matrix eigenval = Matrix({
+        {1.0,   0.0,   0.0},
+        {0.0, 1.539,   0.0},
+        {0.0,   0.0, 0.461}
+    });
+
+    Matrix eigenvec = Matrix({
+        { 0.928, 0.263,  0.263},
+        {   0.0, 0.707, -0.707},
+        {-0.371, 0.657,  0.657}
+    });
+
+    std::pair<Matrix, Matrix> res = computeEigen(mtx);
+
+    EXPECT_EQ(res.first, eigenval);
+    EXPECT_EQ(res.second, eigenvec);
+}

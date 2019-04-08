@@ -114,10 +114,25 @@ double computeResidue( const double& v1, const double& v2 );
  * @param b Um vetor de dimensão igual à da matriz A.
  * @param m O método iterativo a ser utilizado.
  * @param tol A tolerância do resíduo para convergência.
+ * @return O vetor solução do sistema linear.
  */
 Matrix solveIterative( const Matrix& A, const Matrix& b, IterativeMethod m, const double tol = 10E-5 );
 
 /**
  * Calcula o maior autovalor através do Método de Potência
+ * 
+ * @param A Uma matriz quadrada.
+ * @param tol A tolerância do resíduo para convergência.
+ * @return O maior autovalor de A.
  */
 double computeGreatestEigenValue( const Matrix& A , const double tol = 10E-5 );
+
+/**
+ * Calcula matrizes de autovalores e autovetores.
+ * 
+ * @param A Uma matriz quadrada.
+ * @param tol A tolerância do resíduo para convergência.
+ * @return Um par de matrizes no qual first é uma matriz com os autovalores
+ * na diagonal principal e second é a matriz dos autovetores.
+ */
+std::pair<Matrix, Matrix> computeEigen( Matrix A, const double tol = 10E-5 );
