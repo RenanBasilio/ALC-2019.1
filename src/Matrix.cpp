@@ -271,6 +271,38 @@ Matrix operator/(const double s, const Matrix& matrix) {
     return res;
 }
 
+bool Matrix::isSymmetric() const {
+    if ( _rows != _columns ) return false;
+    
+    for ( size_t i = 0; i < _rows; i ++ ) {
+        for ( size_t j = 0; j < _columns; j++ ) {
+            if ( at(i, j) != at(j, i) ) return false;
+        }
+    }
+
+    return true;
+}
+
+bool Matrix::isDiagonalDominant() const {
+    if ( _rows != _columns ) return false;
+
+    for ( size_t i = 0; i < _rows; i++ ) {
+        std::vector<double> row = getRow(i);
+        std::vector<double> col = getColumn(i);
+        double sum_r = 0.0, sum_c = 0.0, diag = at(i,i);
+
+        for ( size_t j = 0; j < _rows; j++ ) {
+            if (j != i) {
+                sum_r += row.at(j);
+                sum_c += col.at(j);
+            }
+        }
+
+        if ( diag < sum_r || diag < sum_c ) return false;
+    }
+    return true;
+}
+
 std::ostream& operator<< (std::ostream& s, const Matrix& mtx) {
     s << std::string(mtx);
     return s;

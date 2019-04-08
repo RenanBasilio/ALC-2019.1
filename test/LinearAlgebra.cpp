@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <LinearAlgebra.hpp>
 
-TEST(LinearAlgebra, BackSubstitution) {
+TEST(LinearEquations, BackSubstitution) {
     Matrix A = Matrix({
         {5, -4, 1, 0},
         {0, 14.0/5.0, -16.0/5.0, 1},
@@ -16,7 +16,7 @@ TEST(LinearAlgebra, BackSubstitution) {
     EXPECT_EQ(x, exp);
 }
 
-TEST(LinearAlgebra, ForwardSubstitution) {
+TEST(LinearEquations, ForwardSubstitution) {
     Matrix A = Matrix({
         {  3,  0,  0,  0 },
         { -1,  1,  0,  0 },
@@ -31,7 +31,7 @@ TEST(LinearAlgebra, ForwardSubstitution) {
     EXPECT_EQ(x, exp);
 }
 
-TEST(LinearAlgebra, GaussElimination) {
+TEST(LinearEquations, GaussElimination) {
     Matrix mtx = Matrix({
         { 5, -4,  1,  0},
         {-4,  6, -4,  1},
@@ -49,7 +49,7 @@ TEST(LinearAlgebra, GaussElimination) {
     EXPECT_EQ(x, exp);
 }
 
-TEST(LinearAlgebra, GaussJordanElimination) {
+TEST(LinearEquations, GaussJordanElimination) {
     Matrix mtx = Matrix({
         { 5, -4,  1,  0},
         {-4,  6, -4,  1},
@@ -67,7 +67,7 @@ TEST(LinearAlgebra, GaussJordanElimination) {
     EXPECT_EQ(x, exp);
 }
 
-TEST(LinearAlgebra, Inverse) {
+TEST(MatrixOperations, Inverse) {
     Matrix mtx = Matrix({
         { 5, -4,  1,  0},
         {-4,  6, -4,  1},
@@ -87,7 +87,7 @@ TEST(LinearAlgebra, Inverse) {
     EXPECT_EQ(mtx*x, Matrix::Identity(4));
 }
 
-TEST(LinearAlgebra, LUDecomposition) {
+TEST(LinearEquations, LUDecomposition) {
     Matrix mtx = Matrix({
         { 5, -4,  1,  0},
         {-4,  6, -4,  1},
@@ -105,7 +105,7 @@ TEST(LinearAlgebra, LUDecomposition) {
     EXPECT_EQ(x, exp);
 }
 
-TEST(LinearAlgebra, CholeskyDecomposition) {
+TEST(LinearEquations, CholeskyDecomposition) {
     Matrix mtx = Matrix({
         { 5, -4,  1,  0},
         {-4,  6, -4,  1},
@@ -119,6 +119,36 @@ TEST(LinearAlgebra, CholeskyDecomposition) {
     Matrix exp = Matrix({{5.8}, {10.2}, {10.8}, {7.2}});
 
     Matrix x = solveCholeskyDecomp(mtx, v);
+
+    EXPECT_EQ(x, exp);
+}
+
+TEST(LinearEquations, JacobiIterative) {
+    Matrix mtx = Matrix({
+        {4, 1, 1},
+        {2, 7, 2},
+        {1, 5, 8}
+    });
+    Matrix v = Matrix({{11}, {15}, {23}}, 3, 1);
+
+    Matrix exp = Matrix({{2}, {1}, {2}}, 3, 1);
+
+    Matrix x = solveIterative(mtx, v, Jacobi, 10E-6);
+
+    EXPECT_EQ(x, exp);
+}
+
+TEST(LinearEquations, GaussSeidelIterative) {
+    Matrix mtx = Matrix({
+        {4, 1, 1},
+        {2, 7, 2},
+        {1, 5, 8}
+    });
+    Matrix v = Matrix({{11}, {15}, {23}}, 3, 1);
+
+    Matrix exp = Matrix({{2}, {1}, {2}}, 3, 1);
+
+    Matrix x = solveIterative(mtx, v, GaussSeidel, 10E-6);
 
     EXPECT_EQ(x, exp);
 }

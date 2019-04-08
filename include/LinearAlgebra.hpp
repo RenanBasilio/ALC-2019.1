@@ -2,6 +2,7 @@
 #include <Matrix.hpp>
 
 enum Form { RowEchelon, Diagonal, Identity };
+enum IterativeMethod { Jacobi, GaussSeidel };
 
 /**
  * A partir da matriz A, obtem uma matriz de transformação para
@@ -95,4 +96,12 @@ Matrix solveLUDecomp ( Matrix A, const Matrix& b );
  */
 Matrix solveCholeskyDecomp ( Matrix A, const Matrix& b );
 
-Matrix solveJacobi( const Matrix& A, const Matrix& b, const double tol = 10E-2 );
+/**
+ * Resolve um sistema linear por um método iterativo.
+ * 
+ * @param A Uma matriz quadrada.
+ * @param b Um vetor de dimensão igual à da matriz A.
+ * @param m O método iterativo a ser utilizado.
+ * @param tol A tolerância do resíduo para convergência.
+ */
+Matrix solveIterative( const Matrix& A, const Matrix& b, IterativeMethod m, const double tol = 10E-5 );

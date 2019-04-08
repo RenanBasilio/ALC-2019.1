@@ -31,10 +31,10 @@ Matrix solveForwardSubstitution( const Matrix& aug ) {
 
     Matrix x = Matrix(aug.nrows());
 
-    for (int i = 0; i < aug.nrows(); i++)
+    for (size_t i = 0; i < aug.nrows(); i++)
     {
         double calc = 0.0;
-        for (int j = 0; j < i; j++) {
+        for (size_t j = 0; j < i; j++) {
             calc += aug.at(i, j) * x.at(j);
         }
         x.at(i) = (aug.at(i, aug.ncolumns() - 1) - calc) / aug.at(i, i);
@@ -138,16 +138,16 @@ Matrix solveCholeskyDecomp( Matrix A, const Matrix& b) {
         throw new size_mismatch("Matrix A is not a square matrix.");
 
     Matrix L = Matrix::Identity(A.nrows());
-    for (int i = 0; i < A.nrows(); i++) {
+    for (size_t i = 0; i < A.nrows(); i++) {
         double sum = 0.0;
-        for (int j = 0; j < i; j++) {
+        for (size_t j = 0; j < i; j++) {
             sum += std::pow(L.at(i, j), 2);
         }
         L.at(i,i) = std::sqrt(A.at(i,i) - sum);
 
-        for (int j = i; j < A.nrows(); j++) {
+        for (size_t j = i; j < A.nrows(); j++) {
             sum = 0.0;
-            for (int k = 0; k < i; k++) {
+            for (size_t k = 0; k < i; k++) {
                 sum += L.at(i, k)*L.at(j, k);
             }
             L.at(j,i) = ( A.at(i, j) - sum ) / L.at(i,i);
@@ -160,11 +160,22 @@ Matrix solveCholeskyDecomp( Matrix A, const Matrix& b) {
     return solveBackSubstitution(L.transpose(), y);         // Ux = LTx = y
 }
 
-Matrix solveJacobi( const Matrix& A, const Matrix& b, const double tol ) {
+Matrix solveIterative( const Matrix& A, const Matrix& b, IterativeMethod m, const double tol ) {
     if (A.ncolumns() != A.nrows()) 
         throw new size_mismatch("Matrix A is not a square matrix.");
     if (A.ncolumns() != b.nrows()) 
         throw new size_mismatch("Height of matrix A does not match height of vector.");
+    
+    switch (m)
+    {
+        case IterativeMethod::Jacobi:
+            if ( !A.isDiagonalDominant() ) 
+                throw new does_not_converge("Matrix A is not diagonal dominant, therefore Jacobi method does not converge.");
+            break;
+        case IterativeMethod::GaussSeidel:
+            if ( !A.isSymmetric() && !A.isDiagonalDominant() ) 
+                throw new does_not_converge("Matrix A is not diagonal dominant or symmetric, therefore Jacobi method does not converge.");
+    }
 
     Matrix curr = Matrix( b.nrows(), 1, 1.0 );
     Matrix prev = Matrix( b.nrows(), 1, 0.0 );
@@ -173,15 +184,31 @@ Matrix solveJacobi( const Matrix& A, const Matrix& b, const double tol ) {
         prev = curr;
 
         for ( size_t i = 0; i < b.nrows(); i++ ) {
-                            
+            
             double sum = 0.0;
-            for ( size_t j = 0; j < b.nrows(); j++) {
-                if ( j != i ) sum += A.at(i, j) * prev.at(j);
+            switch (m)
+            {
+                case IterativeMethod::Jacobi: {
+                    for ( size_t j = 0; j < b.nrows(); j++) {
+                        if ( j != i ) sum += A.at(i, j) * prev.at(j);
+                    }
+                    break;
+                }
+                case IterativeMethod::GaussSeidel: {
+                    for (size_t j = 0; j < i; j++) {
+                        sum += A.at(i,j) * curr.at(j);
+                    }
+                    for (size_t j = i + 1; j < b.nrows(); j++) {
+                        sum += A.at(i, j) * prev.at(j);
+                    }
+                    break;
+                }
+                default:
+                    break;
             }
+
             curr.at(i) = ( b.at(i) - sum ) / A.at(i, i);
         }
-
-        std::cout << computeNorm( curr - prev ) / computeNorm( curr ) << std::endl;
     }
 
     return curr;

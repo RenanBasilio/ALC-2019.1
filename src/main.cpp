@@ -19,7 +19,17 @@ int main(int argc, char* argv[]) {
         {16}, {11}
     }, 2, 1);
 
-    std::cout << solveJacobi(mtx2, v2) << std::endl;
+    Matrix t = Matrix({
+        {4, 1, 1},
+        {2, 7, 2},
+        {1, 5, 8}
+    });
+    Matrix v3 = Matrix({
+        {11}, {15}, {23}
+    }, 3, 1);
+
+    std::cout << solveIterative(t, v3, IterativeMethod::Jacobi, 10E-9) << std::endl;
+    std::cout << solveGaussElim(t, v3) << std::endl;
 
     return 0;
 }

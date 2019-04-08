@@ -72,6 +72,10 @@ public:
     Matrix operator/ (const double s) const;
     friend Matrix operator/ (const double s, const Matrix& matrix);
 
+    /* Properties */
+    bool isDiagonalDominant() const;
+    bool isSymmetric() const;
+
     /* Utility Methods */
     operator std::string() const;
 
