@@ -160,6 +160,15 @@ Matrix solveCholeskyDecomp( Matrix A, const Matrix& b) {
     return solveBackSubstitution(L.transpose(), y);         // Ux = LTx = y
 }
 
+double computeResidue( const Matrix& v1, const Matrix& v2 ) {
+    return computeNorm( v1 - v2 ) / computeNorm( v1 );
+}
+
+double computeResidue( const double& v1, const double& v2 ) {
+    return std::fabs( v1 - v2 ) / std::fabs( v1 );
+}
+
+
 Matrix solveIterative( const Matrix& A, const Matrix& b, IterativeMethod m, const double tol ) {
     if (A.ncolumns() != A.nrows()) 
         throw new size_mismatch("Matrix A is not a square matrix.");
@@ -180,7 +189,7 @@ Matrix solveIterative( const Matrix& A, const Matrix& b, IterativeMethod m, cons
     Matrix curr = Matrix( b.nrows(), 1, 1.0 );
     Matrix prev = Matrix( b.nrows(), 1, 0.0 );
 
-    while ( computeNorm( curr - prev ) / computeNorm( curr ) > tol ) {
+    while ( computeResidue(curr, prev) > tol ) {
         prev = curr;
 
         for ( size_t i = 0; i < b.nrows(); i++ ) {
@@ -212,4 +221,27 @@ Matrix solveIterative( const Matrix& A, const Matrix& b, IterativeMethod m, cons
     }
 
     return curr;
+}
+
+double computeGreatestEigenValue( const Matrix& A, const double tol ) {
+    if (A.ncolumns() != A.nrows()) 
+        throw new size_mismatch("Matrix A is not a square matrix.");
+
+    Matrix vec = Matrix( A.ncolumns(), 1, 1.0 );
+    double lambda = 1;
+    double lambda_prev = 0;
+
+    while ( computeResidue(lambda, lambda_prev) > tol ) {
+        lambda_prev = lambda;
+
+        vec = A * vec;
+        lambda = vec.at(0);
+        vec = vec / lambda;
+    }
+
+    return lambda;
+}
+
+Matrix computeEigenMatrix ( const Matrix& A, const double tol ) {
+
 }

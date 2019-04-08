@@ -152,3 +152,13 @@ TEST(LinearEquations, GaussSeidelIterative) {
 
     EXPECT_EQ(x, exp);
 }
+
+TEST(EigenValues, PowerMethod) {
+    Matrix mtx = Matrix({
+        {1.0, 0.2, 0.0},
+        {0.2, 1.0, 0.5},
+        {0.0, 0.5, 1.0}
+    });
+
+    EXPECT_TRUE(computeGreatestEigenValue(mtx) - 1.539 < 10E-5);
+}

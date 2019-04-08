@@ -97,6 +97,17 @@ Matrix solveLUDecomp ( Matrix A, const Matrix& b );
 Matrix solveCholeskyDecomp ( Matrix A, const Matrix& b );
 
 /**
+ * Calcula o resíduo de entre dois vetores tal que
+ * R = || v1 - v2 || / || v1 ||
+ * 
+ * @param v1 Um vetor coluna
+ * @param v2 Outro vetor coluna
+ * @return O resíduo.
+ */
+double computeResidue( const Matrix& v1, const Matrix& v2 );
+double computeResidue( const double& v1, const double& v2 );
+
+/**
  * Resolve um sistema linear por um método iterativo.
  * 
  * @param A Uma matriz quadrada.
@@ -105,3 +116,8 @@ Matrix solveCholeskyDecomp ( Matrix A, const Matrix& b );
  * @param tol A tolerância do resíduo para convergência.
  */
 Matrix solveIterative( const Matrix& A, const Matrix& b, IterativeMethod m, const double tol = 10E-5 );
+
+/**
+ * Calcula o maior autovalor através do Método de Potência
+ */
+double computeGreatestEigenValue( const Matrix& A , const double tol = 10E-5 );
