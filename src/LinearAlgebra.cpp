@@ -1,7 +1,9 @@
+#define _USE_MATH_DEFINES
+#include <cmath>
+
 #include <LinearAlgebra.hpp>
 #include <Exception.hpp>
 #include <iostream>
-#include <cmath>
 #include <cstdarg>
 #include <utility>
 
