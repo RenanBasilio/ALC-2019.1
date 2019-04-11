@@ -15,7 +15,7 @@ enable_testing()
 include_directories(include)
 
 # Add a submodule to the project
-# include(libs/*/)
+include_directories(lib/termcolor)
 
 # Add an external library to the project
 # find_package(LIB REQUIRED)

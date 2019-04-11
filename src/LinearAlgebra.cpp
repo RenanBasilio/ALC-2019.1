@@ -8,7 +8,7 @@
 #include <utility>
 
 Matrix solveBackSubstitution( const Matrix& aug ) {
-    if ( aug.ncolumns() != aug.nrows() + 1 ) throw new size_mismatch("Invalid matrix size for retro substitution operation.");
+    if ( aug.ncolumns() != aug.nrows() + 1 ) throw size_mismatch("Invalid matrix size for retro substitution operation.");
 
     Matrix x = Matrix(aug.nrows());
 
@@ -30,7 +30,7 @@ Matrix solveBackSubstitution( Matrix A, const Matrix& b) {
 }
 
 Matrix solveForwardSubstitution( const Matrix& aug ) {
-    if ( aug.ncolumns() != aug.nrows() + 1 ) throw new size_mismatch("Invalid matrix size for forward substitution operation.");
+    if ( aug.ncolumns() != aug.nrows() + 1 ) throw size_mismatch("Invalid matrix size for forward substitution operation.");
 
     Matrix x = Matrix(aug.nrows());
 
@@ -82,7 +82,7 @@ Matrix transformMatrix( Form t, Matrix& A) {
                 }
                 break;
             default:
-                throw new std::invalid_argument("Conversion to this form is not available.");
+                throw std::invalid_argument("Conversion to this form is not available.");
         }
         
         A = m_t * A;
@@ -95,9 +95,9 @@ Matrix transformMatrix( Form t, Matrix& A) {
 // Solve an Ax=b system by gaussian elimination, returning x
 Matrix solveGaussElim ( Matrix A, const Matrix& b) {
     if (A.ncolumns() != A.nrows()) 
-        throw new size_mismatch("Matrix A is not a square matrix.");
+        throw size_mismatch("Matrix A is not a square matrix.");
     if (A.ncolumns() != b.nrows()) 
-        throw new size_mismatch("Height of matrix A does not match height of vector.");
+        throw size_mismatch("Height of matrix A does not match height of vector.");
 
     Matrix m = transformMatrix(Form::RowEchelon, A);
 
@@ -106,9 +106,9 @@ Matrix solveGaussElim ( Matrix A, const Matrix& b) {
 
 Matrix solveGaussJordanElim ( Matrix A, const Matrix& b) {
     if (A.ncolumns() != A.nrows()) 
-        throw new size_mismatch("Matrix A is not a square matrix.");
+        throw size_mismatch("Matrix A is not a square matrix.");
     if (A.ncolumns() != b.nrows()) 
-        throw new size_mismatch("Height of matrix A does not match height of vector.");
+        throw size_mismatch("Height of matrix A does not match height of vector.");
 
     Matrix m = transformMatrix(Form::Diagonal, A);
 
@@ -117,7 +117,7 @@ Matrix solveGaussJordanElim ( Matrix A, const Matrix& b) {
 
 Matrix computeInverse( Matrix m ) {
     if (m.ncolumns() != m.nrows()) 
-        throw new size_mismatch("Matrix is not a square matrix.");
+        throw size_mismatch("Matrix is not a square matrix.");
 
     Matrix i = transformMatrix(Form::Identity, m);
 
@@ -126,9 +126,9 @@ Matrix computeInverse( Matrix m ) {
 
 Matrix solveLUDecomp( Matrix A, const Matrix& b){
     if (A.ncolumns() != A.nrows()) 
-        throw new size_mismatch("Matrix A is not a square matrix.");
+        throw size_mismatch("Matrix A is not a square matrix.");
     if (A.ncolumns() != b.nrows()) 
-        throw new size_mismatch("Height of matrix A does not match height of vector.");
+        throw size_mismatch("Height of matrix A does not match height of vector.");
 
     Matrix L = computeInverse(transformMatrix(Form::RowEchelon, A));
     Matrix y = solveForwardSubstitution(L, b);
@@ -138,7 +138,7 @@ Matrix solveLUDecomp( Matrix A, const Matrix& b){
 
 Matrix solveCholeskyDecomp( Matrix A, const Matrix& b) {
     if (A.ncolumns() != A.nrows()) 
-        throw new size_mismatch("Matrix A is not a square matrix.");
+        throw size_mismatch("Matrix A is not a square matrix.");
 
     Matrix L = Matrix::Identity(A.nrows());
     for (size_t i = 0; i < A.nrows(); i++) {
@@ -173,25 +173,27 @@ double computeResidue( const double& v1, const double& v2 ) {
 
 Matrix solveIterative( const Matrix& A, const Matrix& b, IterativeMethod m, const double tol ) {
     if (A.ncolumns() != A.nrows()) 
-        throw new size_mismatch("Matrix A is not a square matrix.");
+        throw size_mismatch("Matrix A is not a square matrix.");
     if (A.ncolumns() != b.nrows()) 
-        throw new size_mismatch("Height of matrix A does not match height of vector.");
+        throw size_mismatch("Height of matrix A does not match height of vector.");
     
     switch (m)
     {
         case IterativeMethod::Jacobi:
             if ( !A.isDiagonalDominant() ) 
-                throw new does_not_converge("Matrix A is not diagonal dominant, therefore Jacobi method does not converge.");
+                throw does_not_converge("Matrix A is not diagonal dominant, therefore Jacobi method does not converge.");
             break;
         case IterativeMethod::GaussSeidel:
             if ( !A.isSymmetric() && !A.isDiagonalDominant() ) 
-                throw new does_not_converge("Matrix A is not diagonal dominant or symmetric, therefore Jacobi method does not converge.");
+                throw does_not_converge("Matrix A is not diagonal dominant or symmetric, therefore Jacobi method does not converge.");
     }
 
     Matrix curr = Matrix( b.nrows(), 1, 1.0 );
     Matrix prev = Matrix( b.nrows(), 1, 0.0 );
+    size_t iterations = 0;
 
     while ( computeResidue(curr, prev) > tol ) {
+        iterations++;
         prev = curr;
 
         for ( size_t i = 0; i < b.nrows(); i++ ) {
@@ -222,25 +224,30 @@ Matrix solveIterative( const Matrix& A, const Matrix& b, IterativeMethod m, cons
         }
     }
 
+    std::cout << "Iterative method converged after " << iterations << " iterations." << std::endl;
     return curr;
 }
 
 double computeGreatestEigenValue( const Matrix& A, const double tol ) {
     if (A.ncolumns() != A.nrows()) 
-        throw new size_mismatch("Matrix A is not a square matrix.");
+        throw size_mismatch("Matrix A is not a square matrix.");
 
     Matrix vec = Matrix( A.ncolumns(), 1, 1.0 );
     double lambda = 1;
     double lambda_prev = 0;
 
+    size_t iterations = 0;
     while ( computeResidue(lambda, lambda_prev) > tol ) {
         lambda_prev = lambda;
 
         vec = A * vec;
         lambda = vec.at(0);
         vec = vec / lambda;
+
+        iterations++;
     }
 
+    std::cout << "Power method converged after " << iterations << " iterations." << std::endl;
     return lambda;
 }
 
@@ -266,9 +273,9 @@ bool checkJacobiConvergence ( const Matrix& A, const double tol, std::pair<size_
 
 std::pair<Matrix, Matrix> computeEigen ( Matrix A, const double tol ) {
     if (A.ncolumns() != A.nrows()) 
-        throw new size_mismatch("Matrix A is not a square matrix.");
+        throw size_mismatch("Matrix A is not a square matrix.");
     if (!A.isSymmetric())
-        throw new does_not_converge("Matrix A is not symmetric, method won't converge.");
+        throw does_not_converge("Matrix A is not symmetric, method won't converge.");
 
     Matrix X = Matrix::Identity( A.nrows() );
     std::pair<size_t, size_t> next;

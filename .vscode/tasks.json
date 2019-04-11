@@ -30,7 +30,6 @@
                 "--build",
                 "build"
             ],
-            "dependsOn": "Make",
             "problemMatcher": [
                 "$gcc"
             ]
@@ -49,7 +48,6 @@
                 "--config",
                 "Release"
             ],
-            "dependsOn": "Make",
             "problemMatcher": [
                 "$gcc"
             ]
