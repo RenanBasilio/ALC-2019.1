@@ -187,3 +187,13 @@ TEST(EigenValues, Jacobi) {
     EXPECT_EQ(res.first, eigenval);
     EXPECT_EQ(res.second, eigenvec);
 }
+
+TEST(MatrixOperations, Determinant) {
+    Matrix mtx = Matrix({
+        {-2.0, 2.0, -3.0},
+        {-1.0, 1.0,  3.0},
+        { 2.0, 0.0, -1.0}
+    });
+
+    EXPECT_DOUBLE_EQ(determinant(mtx), 18);
+}

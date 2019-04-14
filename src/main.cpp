@@ -49,6 +49,11 @@ int main(int argc, char* argv[]) {
         std::cout << termcolor::green << "Gauss-Seidel:    " << termcolor::reset << solveIterative( A, B, GaussSeidel, 10E-5 ).transpose() << std::endl;
     } catch (std::exception e) { std::cout << termcolor::red << e.what() << termcolor::reset << std::endl; }
 
+    std::cout << termcolor::cyan << "d) Determinante de A" << termcolor::reset << std::endl;
+    try {
+        std::cout << determinant(A) << std::endl << std::endl;
+    } catch (std::exception e) { std::cout << termcolor::red << e.what() << termcolor::reset << std::endl; }
+
     std::cout << termcolor::cyan << "======================= Exercicio 3 =======================" << termcolor::reset << std::endl;
 
     A = Matrix({

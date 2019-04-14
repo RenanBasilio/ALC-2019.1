@@ -14,9 +14,11 @@ enum IterativeMethod { Jacobi, GaussSeidel };
  * 
  * @param t A forma à qual a matriz A deve ser convertida.
  * @param A A matriz a ser transformada.
+ * @param p Parâmetro de saída, representa o número de pivotamentos.
  * @return A matriz de transformação.
  */
 Matrix transformMatrix ( Form t, Matrix& A );
+Matrix transformMatrix ( Form t, Matrix& A, int& p);
 
 /**
  * Calcula a inversa de uma matriz.
@@ -136,3 +138,11 @@ double computeGreatestEigenValue( const Matrix& A , const double tol = 10E-5 );
  * na diagonal principal e second é a matriz dos autovetores.
  */
 std::pair<Matrix, Matrix> computeEigen( Matrix A, const double tol = 10E-5 );
+
+/**
+ * Calcula o determinante de uma matriz.
+ * 
+ * @param A Uma matriz quadrada.
+ * @return O determinante da matriz A.
+ */
+double determinant( Matrix A );
