@@ -132,15 +132,15 @@ std::vector<double> Matrix::removeColumn(const size_t position) {
 }
 
 void Matrix::swapRow(const size_t pos1, size_t pos2) {
-    std::vector<double> tmp;
 
     if (pos1 == pos2) return;
 
-    tmp = getRow(pos1);
-
-    insertRow(pos1, removeRow(pos2));
-    removeRow(pos1+1);
-    insertRow(pos2, tmp);
+    double tmp;
+    for (size_t i = 0; i < _columns; i++) {
+        tmp = at(pos1, i);
+        at(pos1, i) = at(pos2, i);
+        at(pos2, i) = tmp;
+    }
 }
 
 Matrix Matrix::transpose() const {

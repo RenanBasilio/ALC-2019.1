@@ -51,17 +51,26 @@ Matrix solveForwardSubstitution( Matrix A, const Matrix& b) {
     return solveForwardSubstitution(A);
 }
 
-Matrix transformMatrix( Form t, Matrix& A) {
+Matrix transformMatrix ( Form t, Matrix& A) {
+    int n = 0;
+    return transformMatrix( t, A, n);
+}
+
+Matrix transformMatrix( Form t, Matrix& A, int& p) {
 
     Matrix m = Matrix::Identity(A.nrows());
+    p = 0;
 
     for (size_t i = 0; i < A.ncolumns(); i++) {
 
         // Pivotamento
         if (std::fabs(A.at(i, i)) == 0.0) {
             for(size_t j = i; j < A.nrows(); i++) {
-                if (A.at(j, i) != 0.0)
+                if (A.at(j, i) != 0.0) {
                     A.swapRow(i, j);
+                    p++;
+                    break;
+                }
             }
         }
         
@@ -185,7 +194,7 @@ Matrix solveIterative( const Matrix& A, const Matrix& b, IterativeMethod m, cons
             break;
         case IterativeMethod::GaussSeidel:
             if ( !A.isSymmetric() && !A.isDiagonalDominant() ) 
-                throw does_not_converge("Matrix A is not diagonal dominant or symmetric, therefore Jacobi method does not converge.");
+                throw does_not_converge("Matrix A is not diagonal dominant or symmetric, therefore Gauss-Seidel method does not converge.");
     }
 
     Matrix curr = Matrix( b.nrows(), 1, 1.0 );
@@ -296,4 +305,18 @@ std::pair<Matrix, Matrix> computeEigen ( Matrix A, const double tol ) {
     }
 
     return std::make_pair(A, X);
+}
+
+double determinant( Matrix A ) {
+    if (A.ncolumns() != A.nrows()) 
+        throw size_mismatch("Matrix A is not a square matrix.");
+
+    int p;
+    transformMatrix(RowEchelon, A, p);
+
+    double det = 1.0;
+    for ( size_t i = 0; i < A.nrows(); i++) {
+        det *= A.at(i, i);
+    }
+    return std::pow(-1, p) * det;
 }
