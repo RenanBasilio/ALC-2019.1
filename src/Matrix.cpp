@@ -13,7 +13,41 @@ Matrix::Matrix(const size_t rows, const size_t columns, const double value) :
     _data = std::vector<std::vector<double>>(rows, std::vector<double>(columns, value));
 }
 
+Matrix::Matrix(const std::initializer_list<double> data, size_t rows, size_t columns) :
+    _columns(columns),
+    _rows(rows)
+{
+    if (_rows == 0) _rows = data.size();
+    
+    _data = std::vector<std::vector<double>>(_rows, std::vector<double>(_columns, 0.0));
+
+    for (size_t i = 0; i < data.size(); i++) {
+        at(i, 0) = data.begin()[i];
+    }
+}
+
 Matrix::Matrix(const std::vector<std::vector<double>> data, size_t rows, size_t columns) :
+    _columns(columns),
+    _rows(rows)
+{
+    if (_rows == 0) _rows = data.size();
+    if (_columns == 0) {
+        for (auto c : data) {
+            _columns = std::max(c.size(), _columns);
+        }
+    }
+
+    _data = std::vector<std::vector<double>>(_rows, std::vector<double>(_columns, 0.0));
+
+    for (size_t r = 0; r < data.size(); r++) {
+        for (size_t c = 0; c < data.begin()[r].size(); c++) {
+            at(r, c) = data.begin()[r].begin()[c];
+        }
+    }
+
+}
+
+Matrix::Matrix(const std::initializer_list<std::initializer_list<double>> data, size_t rows, size_t columns) :
     _columns(columns),
     _rows(rows)
 {
