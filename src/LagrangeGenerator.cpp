@@ -41,7 +41,7 @@ int main(int argc, char const *argv[])
 
     out << "#include <vector>" << std::endl << "extern const std::vector<std::vector<double>> lagrange_weights;" << std::endl;
 
-    out << "const static std::vector<std::vector<double>> lagrange_weights = { { 0 }, " << std::endl;
+    out << "const std::vector<std::vector<double>> lagrange_weights = { { 0 }, " << std::endl;
 
     for (size_t i = 1; i < max_points+1; i++) {
         out << "{ ";

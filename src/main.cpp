@@ -10,8 +10,10 @@ int main(int argc, char* argv[]) {
         {  2,  1,  1,  1, 15,  3 },
         {  1,  2,  2,  2,  3, 14 }
     });
-
-    Matrix B = Matrix({ 30, 10, 10, -10, 0, 5 });
+    Matrix B = Matrix({
+        {30}, {10}, {10}, {-10}, {0}, {5}
+    }, 6);
+    //Matrix B = Matrix({ 30, 10, 10, -10, 0, 5 });
 
     double alpha = 0.15;
 
@@ -59,7 +61,10 @@ int main(int argc, char* argv[]) {
         {4, 5, 3},
         {0, 3, 6}
     });
-    B = Matrix({ 1, 0, 1 });
+    B = Matrix({
+        {1}, {0}, {1}
+    }, 3);
+    //B = Matrix({ 1, 0, 1 });
 
     std::cout << "Entrada:" << std::endl;
     std::cout << "A: " << std::endl << A << std::endl << "B: " << std::endl << B.transpose() << std::endl;

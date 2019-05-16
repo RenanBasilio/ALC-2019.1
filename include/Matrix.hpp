@@ -20,9 +20,9 @@ private:
 public:
     Matrix() {};
     Matrix(const size_t rows, const size_t columns = 1, const double value = 0.0);
-    Matrix(const std::initializer_list<double> data, size_t rows = 0, size_t columns = 1);
+    //Matrix(const std::initializer_list<double> data, size_t rows = 0, size_t columns = 1);
     Matrix(const std::vector<std::vector<double>> data, size_t rows = 0, size_t columns = 0);
-    Matrix(const std::initializer_list<std::initializer_list<double>> data, size_t rows = 0, size_t columns = 0);
+    //Matrix(const std::initializer_list<std::initializer_list<double>> data, size_t rows = 0, size_t columns = 0);
 
     ~Matrix();
 

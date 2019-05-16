@@ -1,5 +1,6 @@
 #include <Generators.hpp>
 #include <LinearAlgebra.hpp>
+#include <cmath>
 
 std::vector<double> generateLagrangeWeights( int pts ) {
     double delta = 1.0/(pts-1.0);

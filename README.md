@@ -11,8 +11,3 @@ O projeto pode ser compilado utilizando a aplicação CMake, através dos comand
 cmake . -Bbuild
 cmake --build build
 ```
-Ou ainda através do Makefile incluso, executando o comando abaixo no diretório do projeto.
-```
-make
-```
-Em ambos os casos será gerado um executável ```alc``` no diretório ```build```, que será criado se não existir.

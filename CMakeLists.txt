@@ -49,22 +49,15 @@ add_executable(LagrangeGenerator src/LagrangeGenerator.cpp src/Generators.cpp sr
 
 add_custom_command(
   OUTPUT lagrange_weights.cpp
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/Debug
-  COMMAND LagrangeGenerator ${MAX_LAGRANGE_POINTS} -f ${CMAKE_CURRENT_BINARY_DIR}/lagrange_weights.cpp
+  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+  COMMAND LagrangeGenerator ${MAX_LAGRANGE_POINTS} -f ${CMAKE_BINARY_DIR}/lagrange_weights.cpp
   DEPENDS LagrangeGenerator build/CMakeCache.txt
 )
 
-add_custom_target( GenerateLagrangeWeights
-  DEPENDS lagrange_weights.cpp
-)
+add_library(lagrange_weights_generated OBJECT lagrange_weights.cpp)
 
 # Set the name of the built executable
 set(EXE_NAME "${PROJECT_NAME}")
-
-if(USE_LAGRANGE_WEIGHTS_TABLE)
-  set ( SOURCE_FILES ${SOURCE_FILES} lagrange_weights.cpp )
-  add_definitions ( /DUSE_LAGRANGE_WEIGHTS_TABLE )
-endif(USE_LAGRANGE_WEIGHTS_TABLE)
 
 
 add_executable(${EXE_NAME} src/main.cpp ${SOURCE_FILES})
@@ -112,6 +105,12 @@ add_executable(Tests ${TEST_SOURCES} ${SOURCE_FILES})
 target_link_libraries(Tests gtest gtest_main)
 include(GoogleTest)
 gtest_discover_tests(Tests)
+
+if(USE_LAGRANGE_WEIGHTS_TABLE)
+  target_sources( Tests PRIVATE $<TARGET_OBJECTS:lagrange_weights_generated> )
+  target_sources( ${EXE_NAME} PUBLIC $<TARGET_OBJECTS:lagrange_weights_generated> )
+  add_definitions ( /DUSE_LAGRANGE_WEIGHTS_TABLE )
+endif(USE_LAGRANGE_WEIGHTS_TABLE)
 
 # Link with an external package
 # target_link_libraries(${EXE_NAME} ${LIB_LIBRARIES})
