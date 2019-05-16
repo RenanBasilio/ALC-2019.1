@@ -1,0 +1,62 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <Generators.hpp>
+
+static void show_usage( std::string name ) {
+    std::cerr << "Usage: " << name.substr( name.find_last_of('\\')+1 ) << " <options> [integration points]" << std::endl << std::endl
+              << "Options:" << std::endl
+              << "-h, --help         Show this help message" << std::endl
+              << "-f, --file <name>  Write C++ code to file instead of outputting to stdout" << std::endl;
+}
+
+int main(int argc, char const *argv[])
+{
+    if (argc < 2) {
+        show_usage(argv[0]);
+        return 1;
+    }
+    std::ofstream file;
+    size_t max_points = 0;
+
+    for ( int i = 1; i < argc; i++ ) {
+        std::string arg = argv[i];
+        if ((arg == "-h") || (arg == "--help")) {
+            show_usage(argv[0]);
+            return 0;
+        }
+        else if (( arg == "-f") || (arg == "--file")) {
+            file.open(argv[i+1]);
+            i++;
+        }
+        else max_points = std::atoi(arg.c_str());
+    }
+
+    if (max_points == 0) {
+        std::cerr << "Number of integration points must be greater than 0." << std::endl;
+        return 1;
+    }
+
+    std::ostream& out = ( file.is_open() ? file : std::cout );
+
+    out << "#include <vector>" << std::endl << "extern const std::vector<std::vector<double>> lagrange_weights;" << std::endl;
+
+    out << "const static std::vector<std::vector<double>> lagrange_weights = { { 0 }, " << std::endl;
+
+    for (size_t i = 1; i < max_points+1; i++) {
+        out << "{ ";
+        std::vector<double> weights = generateLagrangeWeights(i);
+        for (size_t j = 0; j < weights.size(); j++) {
+            out << weights.at(j);
+            if ( j != weights.size()-1 ) out << ", ";
+        }
+        out << " }";
+        if ( i != max_points ) out << "," << std::endl;
+    }
+
+    out << " };" << std::endl << std::endl;
+
+    file.close();
+
+    return 0;
+}

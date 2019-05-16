@@ -65,7 +65,7 @@ Matrix transformMatrix( Form t, Matrix& A, int& p) {
 
         // Pivotamento
         if (std::fabs(A.at(i, i)) == 0.0) {
-            for(size_t j = i; j < A.nrows(); i++) {
+            for(size_t j = i; j < A.nrows(); j++) {
                 if (A.at(j, i) != 0.0) {
                     A.swapRow(i, j);
                     p++;

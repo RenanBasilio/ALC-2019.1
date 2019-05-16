@@ -21,11 +21,23 @@ include_directories(lib/termcolor)
 # find_package(LIB REQUIRED)
 # include_directories(${LIB_INCLUDE_DIRS})
 
+option(USE_LAGRANGE_WEIGHTS_TABLE "Generate a table of Lagrange weights for polynomial integration." ON)
+set(MAX_LAGRANGE_POINTS "10" CACHE STRING "The maximum number integration points for which to generate Lagrange weights."  )
+
 # Declare source files for build
 set(
     SOURCE_FILES
     src/Matrix.cpp
     src/LinearAlgebra.cpp
+    src/Integration.cpp
+    src/Generators.cpp
+)
+
+set(
+    TEST_SOURCES
+    test/Matrix.cpp
+    test/LinearAlgebra.cpp
+    test/Integration.cpp
 )
 
 set(
@@ -33,8 +45,27 @@ set(
     include/main.hpp
 )
 
+add_executable(LagrangeGenerator src/LagrangeGenerator.cpp src/Generators.cpp src/Matrix.cpp src/LinearAlgebra.cpp)
+
+add_custom_command(
+  OUTPUT lagrange_weights.cpp
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/Debug
+  COMMAND LagrangeGenerator ${MAX_LAGRANGE_POINTS} -f ${CMAKE_CURRENT_BINARY_DIR}/lagrange_weights.cpp
+  DEPENDS LagrangeGenerator build/CMakeCache.txt
+)
+
+add_custom_target( GenerateLagrangeWeights
+  DEPENDS lagrange_weights.cpp
+)
+
 # Set the name of the built executable
 set(EXE_NAME "${PROJECT_NAME}")
+
+if(USE_LAGRANGE_WEIGHTS_TABLE)
+  set ( SOURCE_FILES ${SOURCE_FILES} lagrange_weights.cpp )
+  add_definitions ( /DUSE_LAGRANGE_WEIGHTS_TABLE )
+endif(USE_LAGRANGE_WEIGHTS_TABLE)
+
 
 add_executable(${EXE_NAME} src/main.cpp ${SOURCE_FILES})
 set_target_properties(
@@ -77,7 +108,7 @@ if (CMAKE_VERSION VERSION_LESS 2.8.11)
   include_directories("${gtest_SOURCE_DIR}/include")
 endif()
 
-add_executable(Tests test/Matrix.cpp test/LinearAlgebra.cpp ${SOURCE_FILES})
+add_executable(Tests ${TEST_SOURCES} ${SOURCE_FILES})
 target_link_libraries(Tests gtest gtest_main)
 include(GoogleTest)
 gtest_discover_tests(Tests)
