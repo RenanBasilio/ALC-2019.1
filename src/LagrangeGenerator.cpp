@@ -1,6 +1,7 @@
 #include <iostream>
-#include <string>
 #include <fstream>
+#include <string>
+#include <iomanip>
 #include <Generators.hpp>
 
 static void show_usage( std::string name ) {
@@ -38,6 +39,8 @@ int main(int argc, char const *argv[])
     }
 
     std::ostream& out = ( file.is_open() ? file : std::cout );
+
+    out << std::setprecision(20);
 
     out << "#include <vector>" << std::endl << "extern const std::vector<std::vector<double>> lagrange_weights;" << std::endl;
 
