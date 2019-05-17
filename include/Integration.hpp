@@ -1,8 +1,10 @@
 #pragma once
 
+#include <Definitions.hpp>
+
 // Defines a type named "function" which is a pointer to a function that takes 
-// a double and returns a double.
-typedef double(*Function)(double);
+// a real and returns a real.
+typedef real(*Function)(real);
 
 enum IntegrationMethod { Polinomial, Quadrature };
 
@@ -16,7 +18,7 @@ enum IntegrationMethod { Polinomial, Quadrature };
  * @param m   O método de integração.
  * @return    O valor da integral numérica da função.
  */
-double computeIntegral( Function f, double x1, double x2, size_t pts, IntegrationMethod m );
+real computeIntegral( Function f, real x1, real x2, size_t pts, IntegrationMethod m );
 
 /**
  * Calcula o valor da integral utilizando o metodo polinomial.
@@ -27,4 +29,4 @@ double computeIntegral( Function f, double x1, double x2, size_t pts, Integratio
  * @param pts O número de pontos de integração.
  * @return    O valor da integral numérica da função.
  */
-double computeIntegralPolinomial( Function f, double x1, double x2, size_t pts );
+real computeIntegralPolinomial( Function f, real x1, real x2, size_t pts );

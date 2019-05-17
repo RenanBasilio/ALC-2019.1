@@ -5,6 +5,8 @@
 #include <vector>
 #include <cstdio>
 
+#include <Definitions.hpp>
+
 /**
  * Esta classe representa uma matriz para aplicações de algebra linear.
  * Os dados da matriz são armazenados no formato row-major.
@@ -14,15 +16,15 @@
 class Matrix
 {
 private:
-    std::vector<std::vector<double>> _data;
+    std::vector<std::vector<real>> _data;
     size_t _columns, _rows;
 
 public:
     Matrix() {};
-    Matrix(const size_t rows, const size_t columns = 1, const double value = 0.0);
-    //Matrix(const std::initializer_list<double> data, size_t rows = 0, size_t columns = 1);
-    Matrix(const std::vector<std::vector<double>> data, size_t rows = 0, size_t columns = 0);
-    //Matrix(const std::initializer_list<std::initializer_list<double>> data, size_t rows = 0, size_t columns = 0);
+    Matrix(const size_t rows, const size_t columns = 1, const real value = 0.0);
+    //Matrix(const std::initializer_list<real> data, size_t rows = 0, size_t columns = 1);
+    Matrix(const std::vector<std::vector<real>> data, size_t rows = 0, size_t columns = 0);
+    //Matrix(const std::initializer_list<std::initializer_list<real>> data, size_t rows = 0, size_t columns = 0);
 
     ~Matrix();
 
@@ -32,21 +34,21 @@ public:
     size_t nrows() const;
 
     /* Accessor */
-    double& at(const size_t r, const size_t c = 0);
+    real& at(const size_t r, const size_t c = 0);
 
-    const double& at(const size_t r, const size_t c = 0) const;
+    const real& at(const size_t r, const size_t c = 0) const;
 
-    const std::vector<double> getRow(const size_t index) const;
+    const std::vector<real> getRow(const size_t index) const;
 
-    std::vector<double> getColumn(const size_t index) const;
+    std::vector<real> getColumn(const size_t index) const;
 
-    void insertRow(const size_t position, const std::vector<double> l);
+    void insertRow(const size_t position, const std::vector<real> l);
 
-    void insertColumn(const size_t position, const std::vector<double> l);
+    void insertColumn(const size_t position, const std::vector<real> l);
 
-    std::vector<double> removeRow(const size_t position);
+    std::vector<real> removeRow(const size_t position);
 
-    std::vector<double> removeColumn(const size_t position);
+    std::vector<real> removeColumn(const size_t position);
 
     void swapRow(const size_t pos1, size_t pos2);
 
@@ -62,17 +64,17 @@ public:
     Matrix transpose() const;
 
     /* Scalar operations */
-    Matrix operator+ (const double s) const;
-    friend Matrix operator+ (const double s, const Matrix& matrix);
+    Matrix operator+ (const real s) const;
+    friend Matrix operator+ (const real s, const Matrix& matrix);
 
-    Matrix operator- (const double s) const;
-    friend Matrix operator- (const double s, const Matrix& matrix);
+    Matrix operator- (const real s) const;
+    friend Matrix operator- (const real s, const Matrix& matrix);
 
-    Matrix operator* (const double s) const;
-    friend Matrix operator* (const double s, const Matrix& matrix);
+    Matrix operator* (const real s) const;
+    friend Matrix operator* (const real s, const Matrix& matrix);
 
-    Matrix operator/ (const double s) const;
-    friend Matrix operator/ (const double s, const Matrix& matrix);
+    Matrix operator/ (const real s) const;
+    friend Matrix operator/ (const real s, const Matrix& matrix);
 
     /* Properties */
     bool isDiagonalDominant() const;
@@ -85,14 +87,14 @@ public:
     static Matrix Identity(const size_t size);
 };
 
-Matrix operator+ (const double s, const Matrix& matrix);
+Matrix operator+ (const real s, const Matrix& matrix);
 
-Matrix operator- (const double s, const Matrix& matrix);
+Matrix operator- (const real s, const Matrix& matrix);
 
-Matrix operator* (const double s, const Matrix& matrix);
+Matrix operator* (const real s, const Matrix& matrix);
 
-Matrix operator/ (const double s, const Matrix& matrix);
+Matrix operator/ (const real s, const Matrix& matrix);
 
 std::ostream& operator<< (std::ostream& s, const Matrix& mtx);
 
-double computeNorm( const Matrix& vec );
+real computeNorm( const Matrix& vec );

@@ -1,4 +1,5 @@
 #pragma once
 #include <vector>
+#include <Definitions.hpp>
 
-std::vector<double> generateLagrangeWeights( int pts );
+std::vector<real> generateLagrangeWeights( int pts );

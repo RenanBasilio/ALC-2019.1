@@ -8,7 +8,7 @@ Matrix generateTestMatrix(size_t rows, size_t columns) {
 
     Matrix mtx = Matrix(rows, columns);
 
-    std::uniform_real_distribution<double> unif(0, 100);
+    std::uniform_real_distribution<real> unif(0, 100);
     std::default_random_engine re;
     for (size_t i = 0; i < rows; i++) {
         for (size_t j = 0; j < columns; j++) {
@@ -29,7 +29,7 @@ TEST(MatrixBasics, InitializeZeroMatrix) {
 }
 
 TEST(MatrixBasics, InitializeColumnVector) {
-    double val[4] = {1.0, 8.5, 4.7, 7.2};
+    real val[4] = {1.0, 8.5, 4.7, 7.2};
     Matrix mtx = Matrix({{val[0]}, {val[1]}, {val[2]}, {val[3]}});
     for (size_t i = 0; i < 4; i++) {
         EXPECT_EQ(mtx.at(i, 0), val[i]) << mtx;
@@ -39,7 +39,7 @@ TEST(MatrixBasics, InitializeColumnVector) {
 }
 
 TEST(MatrixBasics, InitializeRowVector) {
-    double val[7] = {1.0, 8.5, 4.7, 7.2, 9.6, 15.4, -5.4};
+    real val[7] = {1.0, 8.5, 4.7, 7.2, 9.6, 15.4, -5.4};
     Matrix mtx = Matrix({{val[0], val[1], val[2], val[3], val[4], val[5], val[6]}});
     for (size_t i = 0; i < 7; i++) {
         EXPECT_EQ(mtx.at(0, i), val[i]) << mtx;
@@ -49,8 +49,8 @@ TEST(MatrixBasics, InitializeRowVector) {
 
 TEST(MatrixBasics, InitializeSquareMatrixAndAccessorOperator) {
 
-    std::vector<std::vector<double>> val(5, std::vector<double>(5,0));
-    std::uniform_real_distribution<double> unif(0, 100);
+    std::vector<std::vector<real>> val(5, std::vector<real>(5,0));
+    std::uniform_real_distribution<real> unif(0, 100);
     std::default_random_engine re;
     for (size_t i = 0; i < 5; i++) {
         for (size_t j = 0; j < 5; j++) {

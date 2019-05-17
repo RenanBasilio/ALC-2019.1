@@ -42,13 +42,15 @@ int main(int argc, char const *argv[])
 
     out << std::setprecision(20);
 
-    out << "#include <vector>" << std::endl << "extern const std::vector<std::vector<double>> lagrange_weights;" << std::endl;
+    out << "#include <Definitions.hpp>" << std::endl 
+        << "#include <vector>" << std::endl 
+        << "extern const std::vector<std::vector<real>> lagrange_weights;" << std::endl;
 
-    out << "const std::vector<std::vector<double>> lagrange_weights = { { 0 }, " << std::endl;
+    out << "const std::vector<std::vector<real>> lagrange_weights = { { 0 }, " << std::endl;
 
     for (size_t i = 1; i < max_points+1; i++) {
         out << "{ ";
-        std::vector<double> weights = generateLagrangeWeights(i);
+        std::vector<real> weights = generateLagrangeWeights(i);
         for (size_t j = 0; j < weights.size(); j++) {
             out << weights.at(j);
             if ( j != weights.size()-1 ) out << ", ";

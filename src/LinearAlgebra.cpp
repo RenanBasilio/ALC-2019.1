@@ -14,7 +14,7 @@ Matrix solveBackSubstitution( const Matrix& aug ) {
 
     for (int i = aug.nrows() - 1; i >= 0; i--)
     {
-        double calc = 0.0;
+        real calc = 0.0;
         for (int j = aug.ncolumns() - 2; j > i; j--) {
             calc += aug.at(i, j) * x.at(j);
         }
@@ -36,7 +36,7 @@ Matrix solveForwardSubstitution( const Matrix& aug ) {
 
     for (size_t i = 0; i < aug.nrows(); i++)
     {
-        double calc = 0.0;
+        real calc = 0.0;
         for (size_t j = 0; j < i; j++) {
             calc += aug.at(i, j) * x.at(j);
         }
@@ -151,7 +151,7 @@ Matrix solveCholeskyDecomp( Matrix A, const Matrix& b) {
 
     Matrix L = Matrix::Identity(A.nrows());
     for (size_t i = 0; i < A.nrows(); i++) {
-        double sum = 0.0;
+        real sum = 0.0;
         for (size_t j = 0; j < i; j++) {
             sum += std::pow(L.at(i, j), 2);
         }
@@ -171,16 +171,16 @@ Matrix solveCholeskyDecomp( Matrix A, const Matrix& b) {
     return solveBackSubstitution(L.transpose(), y);         // Ux = LTx = y
 }
 
-double computeResidue( const Matrix& v1, const Matrix& v2 ) {
+real computeResidue( const Matrix& v1, const Matrix& v2 ) {
     return computeNorm( v1 - v2 ) / computeNorm( v1 );
 }
 
-double computeResidue( const double& v1, const double& v2 ) {
+real computeResidue( const real& v1, const real& v2 ) {
     return std::fabs( v1 - v2 ) / std::fabs( v1 );
 }
 
 
-Matrix solveIterative( const Matrix& A, const Matrix& b, IterativeMethod m, const double tol ) {
+Matrix solveIterative( const Matrix& A, const Matrix& b, IterativeMethod m, const real tol ) {
     if (A.ncolumns() != A.nrows()) 
         throw size_mismatch("Matrix A is not a square matrix.");
     if (A.ncolumns() != b.nrows()) 
@@ -207,7 +207,7 @@ Matrix solveIterative( const Matrix& A, const Matrix& b, IterativeMethod m, cons
 
         for ( size_t i = 0; i < b.nrows(); i++ ) {
             
-            double sum = 0.0;
+            real sum = 0.0;
             switch (m)
             {
                 case IterativeMethod::Jacobi: {
@@ -237,13 +237,13 @@ Matrix solveIterative( const Matrix& A, const Matrix& b, IterativeMethod m, cons
     return curr;
 }
 
-double computeGreatestEigenValue( const Matrix& A, const double tol ) {
+real computeGreatestEigenValue( const Matrix& A, const real tol ) {
     if (A.ncolumns() != A.nrows()) 
         throw size_mismatch("Matrix A is not a square matrix.");
 
     Matrix vec = Matrix( A.ncolumns(), 1, 1.0 );
-    double lambda = 1;
-    double lambda_prev = 0;
+    real lambda = 1;
+    real lambda_prev = 0;
 
     size_t iterations = 0;
     while ( computeResidue(lambda, lambda_prev) > tol ) {
@@ -260,8 +260,8 @@ double computeGreatestEigenValue( const Matrix& A, const double tol ) {
     return lambda;
 }
 
-bool checkJacobiConvergence ( const Matrix& A, const double tol, std::pair<size_t, size_t>& next ) {
-    double greatest = 0.0;
+bool checkJacobiConvergence ( const Matrix& A, const real tol, std::pair<size_t, size_t>& next ) {
+    real greatest = 0.0;
     bool pass = true;
     for (size_t i = 0; i < A.nrows(); i++) {
         for (size_t j = i; j < A.ncolumns(); j++) {
@@ -280,7 +280,7 @@ bool checkJacobiConvergence ( const Matrix& A, const double tol, std::pair<size_
 
 
 
-std::pair<Matrix, Matrix> computeEigen ( Matrix A, const double tol ) {
+std::pair<Matrix, Matrix> computeEigen ( Matrix A, const real tol ) {
     if (A.ncolumns() != A.nrows()) 
         throw size_mismatch("Matrix A is not a square matrix.");
     if (!A.isSymmetric())
@@ -290,7 +290,7 @@ std::pair<Matrix, Matrix> computeEigen ( Matrix A, const double tol ) {
     std::pair<size_t, size_t> next;
 
     while ( !checkJacobiConvergence( A, tol, next ) ) {
-        double phi = M_PI_4;
+        real phi = M_PI_4;
         if ( A.at(next.first, next.first) != A.at(next.second, next.second) ) {
             phi = std::atan( 2*A.at(next.first, next.second) / (A.at(next.first, next.first) - A.at(next.second, next.second)) ) / 2;
         }
@@ -307,14 +307,14 @@ std::pair<Matrix, Matrix> computeEigen ( Matrix A, const double tol ) {
     return std::make_pair(A, X);
 }
 
-double determinant( Matrix A ) {
+real determinant( Matrix A ) {
     if (A.ncolumns() != A.nrows()) 
         throw size_mismatch("Matrix A is not a square matrix.");
 
     int p;
     transformMatrix(RowEchelon, A, p);
 
-    double det = 1.0;
+    real det = 1.0;
     for ( size_t i = 0; i < A.nrows(); i++) {
         det *= A.at(i, i);
     }

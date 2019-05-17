@@ -21,8 +21,13 @@ include_directories(lib/termcolor)
 # find_package(LIB REQUIRED)
 # include_directories(${LIB_INCLUDE_DIRS})
 
+include(CMakeDependentOption)
+
+cmake_dependent_option(USE_EXTENDED_DOUBLE_PRECISION "Use 80 bit double (long double) instead of 64 bit double." ON "NOT USE_BOOST_RATIONAL" OFF)
+cmake_dependent_option(USE_BOOST_RATIONAL "Use Boost multiprecision instead of 64 bit double." OFF "NOT USE_EXTENDED_DOUBLE_PRECISION" OFF)
+
 option(USE_LAGRANGE_WEIGHTS_TABLE "Generate a table of Lagrange weights for polynomial integration." ON)
-set(MAX_LAGRANGE_POINTS "10" CACHE STRING "The maximum number integration points for which to generate Lagrange weights."  )
+set(MAX_LAGRANGE_POINTS "20" CACHE STRING "The maximum number integration points for which to generate Lagrange weights."  )
 
 # Declare source files for build
 set(
@@ -68,38 +73,10 @@ set_target_properties(
 
 target_include_directories(${EXE_NAME} PUBLIC ${INCLUDE_DIRECTORIES})
 
-# GTest
-# Download and unpack googletest at configure time
-configure_file(lib/googletest/CMakeLists.txt.in googletest-download/CMakeLists.txt)
-execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
-  RESULT_VARIABLE result
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/googletest-download )
-if(result)
-  message(FATAL_ERROR "CMake step for googletest failed: ${result}")
-endif()
-execute_process(COMMAND ${CMAKE_COMMAND} --build .
-  RESULT_VARIABLE result
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/googletest-download )
-if(result)
-  message(FATAL_ERROR "Build step for googletest failed: ${result}")
-endif()
-
 # Prevent overriding the parent project's compiler/linker
 # settings on Windows
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-
-# Add googletest directly to our build. This defines
-# the gtest and gtest_main targets.
-add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/googletest-src
-                 ${CMAKE_CURRENT_BINARY_DIR}/googletest-build
-                 EXCLUDE_FROM_ALL)
-
-# The gtest/gtest_main targets carry header search path
-# dependencies automatically when using CMake 2.8.11 or
-# later. Otherwise we have to add them here ourselves.
-if (CMAKE_VERSION VERSION_LESS 2.8.11)
-  include_directories("${gtest_SOURCE_DIR}/include")
-endif()
+add_subdirectory(lib/googletest)
 
 add_executable(Tests ${TEST_SOURCES} ${SOURCE_FILES})
 target_link_libraries(Tests gtest gtest_main)
@@ -110,18 +87,12 @@ if(USE_LAGRANGE_WEIGHTS_TABLE)
   target_sources( Tests PRIVATE $<TARGET_OBJECTS:lagrange_weights_generated> )
   target_sources( ${EXE_NAME} PUBLIC $<TARGET_OBJECTS:lagrange_weights_generated> )
   add_definitions ( /DUSE_LAGRANGE_WEIGHTS_TABLE )
-endif(USE_LAGRANGE_WEIGHTS_TABLE)
+endif()
 
-# Link with an external package
-# target_link_libraries(${EXE_NAME} ${LIB_LIBRARIES})
-
-# Link with a submodule
-# target_link_libraries(${EXE_NAME} ${SUBPROJECT_NAME})
-
-# Copy dynamic libraries to executable directory if necessary
-# add_custom_command(
-#     TARGET ${PROJECT_NAME} POST_BUILD
-#     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-#         ${LIB_SHARED_LIB}
-#         $<TARGET_FILE_DIR:${PROJECT_NAME}>
-# )
+if(USE_EXTENDED_DOUBLE_PRECISION)
+  add_definitions( /DUSE_EXTENDED_DOUBLE_PRECISION )
+elseif(USE_BOOST_RATIONAL)
+  find_package(Boost REQUIRED COMPONENTS multiprecision)
+  include_directories( ${Boost_INCLUDE_DIRS} )
+  add_definitions( /DUSE_BOOST_RATIONAL )
+endif()

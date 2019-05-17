@@ -3,7 +3,7 @@
 #include <cmath>
 
 TEST ( Integration, Polinomial ) {
-    Function f = [](double x)->double{ return std::exp((-1)*std::pow(x, 2)); };
+    Function f = [](real x)->real{ return std::exp((-1)*std::pow(x, 2)); };
 
     EXPECT_NEAR( computeIntegral( f, 0, 1,  1, Polinomial ), 0.778801, 1e-6 );
     EXPECT_NEAR( computeIntegral( f, 0, 1,  2, Polinomial ), 0.68394,  1e-5 );

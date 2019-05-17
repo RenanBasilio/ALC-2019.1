@@ -1,6 +1,8 @@
 #pragma once
 #include <Matrix.hpp>
 
+#include <Definitions.hpp>
+
 enum Form { RowEchelon, Diagonal, Identity };
 enum IterativeMethod { Jacobi, GaussSeidel };
 
@@ -106,8 +108,8 @@ Matrix solveCholeskyDecomp ( Matrix A, const Matrix& b );
  * @param v2 Outro vetor coluna
  * @return O resíduo.
  */
-double computeResidue( const Matrix& v1, const Matrix& v2 );
-double computeResidue( const double& v1, const double& v2 );
+real computeResidue( const Matrix& v1, const Matrix& v2 );
+real computeResidue( const real& v1, const real& v2 );
 
 /**
  * Resolve um sistema linear por um método iterativo.
@@ -118,7 +120,7 @@ double computeResidue( const double& v1, const double& v2 );
  * @param tol A tolerância do resíduo para convergência.
  * @return O vetor solução do sistema linear.
  */
-Matrix solveIterative( const Matrix& A, const Matrix& b, IterativeMethod m, const double tol = 10E-5 );
+Matrix solveIterative( const Matrix& A, const Matrix& b, IterativeMethod m, const real tol = 10E-5 );
 
 /**
  * Calcula o maior autovalor através do Método de Potência
@@ -127,7 +129,7 @@ Matrix solveIterative( const Matrix& A, const Matrix& b, IterativeMethod m, cons
  * @param tol A tolerância do resíduo para convergência.
  * @return O maior autovalor de A.
  */
-double computeGreatestEigenValue( const Matrix& A , const double tol = 10E-5 );
+real computeGreatestEigenValue( const Matrix& A , const real tol = 10E-5 );
 
 /**
  * Calcula matrizes de autovalores e autovetores.
@@ -137,7 +139,7 @@ double computeGreatestEigenValue( const Matrix& A , const double tol = 10E-5 );
  * @return Um par de matrizes no qual first é uma matriz com os autovalores
  * na diagonal principal e second é a matriz dos autovetores.
  */
-std::pair<Matrix, Matrix> computeEigen( Matrix A, const double tol = 10E-5 );
+std::pair<Matrix, Matrix> computeEigen( Matrix A, const real tol = 10E-5 );
 
 /**
  * Calcula o determinante de uma matriz.
@@ -145,4 +147,4 @@ std::pair<Matrix, Matrix> computeEigen( Matrix A, const double tol = 10E-5 );
  * @param A Uma matriz quadrada.
  * @return O determinante da matriz A.
  */
-double determinant( Matrix A );
+real determinant( Matrix A );

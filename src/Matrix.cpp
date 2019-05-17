@@ -6,27 +6,27 @@
 #include <algorithm>
 #include <cmath>
 
-Matrix::Matrix(const size_t rows, const size_t columns, const double value) : 
+Matrix::Matrix(const size_t rows, const size_t columns, const real value) : 
     _columns(columns),
     _rows(rows)
 {
-    _data = std::vector<std::vector<double>>(rows, std::vector<double>(columns, value));
+    _data = std::vector<std::vector<real>>(rows, std::vector<real>(columns, value));
 }
 
-/* Matrix::Matrix(const std::initializer_list<double> data, size_t rows, size_t columns) :
+/* Matrix::Matrix(const std::initializer_list<real> data, size_t rows, size_t columns) :
     _columns(columns),
     _rows(rows)
 {
     if (_rows == 0) _rows = data.size();
     
-    _data = std::vector<std::vector<double>>(_rows, std::vector<double>(_columns, 0.0));
+    _data = std::vector<std::vector<real>>(_rows, std::vector<real>(_columns, 0.0));
 
     for (size_t i = 0; i < data.size(); i++) {
         at(i, 0) = data.begin()[i];
     }
 } */
 
-Matrix::Matrix(const std::vector<std::vector<double>> data, size_t rows, size_t columns) :
+Matrix::Matrix(const std::vector<std::vector<real>> data, size_t rows, size_t columns) :
     _columns(columns),
     _rows(rows)
 {
@@ -37,7 +37,7 @@ Matrix::Matrix(const std::vector<std::vector<double>> data, size_t rows, size_t 
         }
     }
 
-    _data = std::vector<std::vector<double>>(_rows, std::vector<double>(_columns, 0.0));
+    _data = std::vector<std::vector<real>>(_rows, std::vector<real>(_columns, 0.0));
 
     for (size_t r = 0; r < data.size(); r++) {
         for (size_t c = 0; c < data.begin()[r].size(); c++) {
@@ -47,7 +47,7 @@ Matrix::Matrix(const std::vector<std::vector<double>> data, size_t rows, size_t 
 
 }
 
-/* Matrix::Matrix(const std::initializer_list<std::initializer_list<double>> data, size_t rows, size_t columns) :
+/* Matrix::Matrix(const std::initializer_list<std::initializer_list<real>> data, size_t rows, size_t columns) :
     _columns(columns),
     _rows(rows)
 {
@@ -58,7 +58,7 @@ Matrix::Matrix(const std::vector<std::vector<double>> data, size_t rows, size_t 
         }
     }
 
-    _data = std::vector<std::vector<double>>(_rows, std::vector<double>(_columns, 0.0));
+    _data = std::vector<std::vector<real>>(_rows, std::vector<real>(_columns, 0.0));
 
     for (size_t r = 0; r < data.size(); r++) {
         for (size_t c = 0; c < data.begin()[r].size(); c++) {
@@ -79,20 +79,20 @@ size_t Matrix::nrows() const {
     return _rows;
 }
 
-double& Matrix::at(const size_t i, const size_t j) {
+real& Matrix::at(const size_t i, const size_t j) {
     return _data.at(i).at(j);
 }
 
-const double& Matrix::at(const size_t i, const size_t j) const {
+const real& Matrix::at(const size_t i, const size_t j) const {
     return _data.at(i).at(j);
 }
 
-const std::vector<double> Matrix::getRow(const size_t index) const {
+const std::vector<real> Matrix::getRow(const size_t index) const {
     return _data.at(index);
 }
 
-std::vector<double> Matrix::getColumn(const size_t index) const {
-    std::vector<double> col = std::vector<double>();
+std::vector<real> Matrix::getColumn(const size_t index) const {
+    std::vector<real> col = std::vector<real>();
     col.reserve(_rows);
     
     for (auto i : _data) {
@@ -102,27 +102,27 @@ std::vector<double> Matrix::getColumn(const size_t index) const {
     return col;
 }
 
-void Matrix::insertRow(const size_t position, const std::vector<double> l) {
+void Matrix::insertRow(const size_t position, const std::vector<real> l) {
     _data.insert(_data.begin()+position, l);
     _rows++;
 }
 
-void Matrix::insertColumn(const size_t position, const std::vector<double> l) {
+void Matrix::insertColumn(const size_t position, const std::vector<real> l) {
     for (size_t i = 0; i < _rows; i++) {
         _data.at(i).insert(_data.at(i).begin()+position, l.at(i));
     }
     _columns++;
 }
 
-std::vector<double> Matrix::removeRow(const size_t position) {
-    std::vector<double> vr = _data.at(position);
+std::vector<real> Matrix::removeRow(const size_t position) {
+    std::vector<real> vr = _data.at(position);
     _data.erase(_data.begin()+position);
     _rows--;
     return vr;
 }
 
-std::vector<double> Matrix::removeColumn(const size_t position) {
-    std::vector<double> vr;
+std::vector<real> Matrix::removeColumn(const size_t position) {
+    std::vector<real> vr;
     for (size_t i = 0; i < _rows; i++) {
         vr.push_back(_data.at(i).at(position));
         _data.at(i).erase(_data.at(i).begin()+position);
@@ -135,7 +135,7 @@ void Matrix::swapRow(const size_t pos1, size_t pos2) {
 
     if (pos1 == pos2) return;
 
-    double tmp;
+    real tmp;
     for (size_t i = 0; i < _columns; i++) {
         tmp = at(pos1, i);
         at(pos1, i) = at(pos2, i);
@@ -222,7 +222,7 @@ Matrix Matrix::operator*(const Matrix& other) const {
 
     for (size_t i = 0; i < _rows; i++) {
         for (size_t j = 0; j < other._columns; j++) {
-            double val = 0.0;
+            real val = 0.0;
             for (size_t k = 0; k < _columns; k++) {
                 val += getRow(i).at(k) * tr.getRow(j).at(k);
             }
@@ -233,7 +233,7 @@ Matrix Matrix::operator*(const Matrix& other) const {
     return res;
 }
 
-Matrix Matrix::operator+(const double s) const {
+Matrix Matrix::operator+(const real s) const {
     Matrix res = Matrix(_rows, _columns);
 
     for (size_t i = 0; i < _rows; i++) {
@@ -245,11 +245,11 @@ Matrix Matrix::operator+(const double s) const {
     return res;
 }
 
-Matrix operator+(const double s, const Matrix& matrix) {
+Matrix operator+(const real s, const Matrix& matrix) {
     return matrix + s;
 }
 
-Matrix Matrix::operator-(const double s) const {
+Matrix Matrix::operator-(const real s) const {
     Matrix res = Matrix(_rows, _columns);
 
     for (size_t i = 0; i < _rows; i++) {
@@ -261,11 +261,11 @@ Matrix Matrix::operator-(const double s) const {
     return res;
 }
 
-Matrix operator-(const double s, const Matrix& matrix) {
+Matrix operator-(const real s, const Matrix& matrix) {
     return matrix - s;
 }
 
-Matrix Matrix::operator*(const double s) const {
+Matrix Matrix::operator*(const real s) const {
     Matrix res = Matrix(_rows, _columns);
 
     for (size_t i = 0; i < _rows; i++) {
@@ -277,11 +277,11 @@ Matrix Matrix::operator*(const double s) const {
     return res;
 }
 
-Matrix operator*(const double s, const Matrix& matrix) {
+Matrix operator*(const real s, const Matrix& matrix) {
     return matrix * s;
 }
 
-Matrix Matrix::operator/(const double s) const {
+Matrix Matrix::operator/(const real s) const {
     Matrix res = Matrix(_rows, _columns);
 
     for (size_t i = 0; i < _rows; i++) {
@@ -293,7 +293,7 @@ Matrix Matrix::operator/(const double s) const {
     return res;
 }
 
-Matrix operator/(const double s, const Matrix& matrix) {
+Matrix operator/(const real s, const Matrix& matrix) {
     Matrix res = Matrix(matrix._rows, matrix._columns);
 
     for (size_t i = 0; i < matrix._rows; i++) {
@@ -321,9 +321,9 @@ bool Matrix::isDiagonalDominant() const {
     if ( _rows != _columns ) return false;
 
     for ( size_t i = 0; i < _rows; i++ ) {
-        std::vector<double> row = getRow(i);
-        std::vector<double> col = getColumn(i);
-        double sum_r = 0.0, sum_c = 0.0, diag = at(i,i);
+        std::vector<real> row = getRow(i);
+        std::vector<real> col = getColumn(i);
+        real sum_r = 0.0, sum_c = 0.0, diag = at(i,i);
 
         for ( size_t j = 0; j < _rows; j++ ) {
             if (j != i) {
@@ -350,10 +350,10 @@ Matrix Matrix::Identity(const size_t size) {
     return mtx;
 }
 
-double computeNorm( const Matrix& vec ) {
+real computeNorm( const Matrix& vec ) {
     if ( vec.ncolumns() > 1 ) throw size_mismatch("Norm not available for matrices of width higher than 1.");
 
-    double sum = 0.0;
+    real sum = 0.0;
     for ( size_t i = 0; i < vec.nrows(); i++ ) {
         sum += std::pow(vec.at(i), 2);
     }

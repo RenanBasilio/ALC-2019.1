@@ -5,7 +5,7 @@
 #include <Integration.hpp>
 #include <Generators.hpp>
 
-double computeIntegral( Function f, double x1, double x2, size_t pts, IntegrationMethod m ) {
+real computeIntegral( Function f, real x1, real x2, size_t pts, IntegrationMethod m ) {
     switch (m)
     {
     case IntegrationMethod::Polinomial:
@@ -18,17 +18,17 @@ double computeIntegral( Function f, double x1, double x2, size_t pts, Integratio
     }
 }
 
-double computeIntegralPolinomial ( Function f, double x1, double x2, size_t pts ) {
+real computeIntegralPolinomial ( Function f, real x1, real x2, size_t pts ) {
     if (pts == 1) return f( (x1 + x2)/2 );
     else {
-        double delta = (x2 - x1)/(pts-1.0);
-        double sum = 0;
+        real delta = (x2 - x1)/(pts-1.0);
+        real sum = 0;
 
         #ifndef USE_LAGRANGE_WEIGHTS_TABLE
-            std::vector<double> weights = generateLagrangeWeights( pts );
+            std::vector<real> weights = generateLagrangeWeights( pts );
         #else
-            extern const std::vector<std::vector<double>> lagrange_weights;
-            std::vector<double> weights;
+            extern const std::vector<std::vector<real>> lagrange_weights;
+            std::vector<real> weights;
             if ( pts <= lagrange_weights.size() ) weights = lagrange_weights.at( pts );
             else weights = generateLagrangeWeights( pts );
         #endif

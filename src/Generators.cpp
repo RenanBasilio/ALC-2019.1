@@ -2,8 +2,8 @@
 #include <LinearAlgebra.hpp>
 #include <cmath>
 
-std::vector<double> generateLagrangeWeights( int pts ) {
-    double delta = 1.0/(pts-1.0);
+std::vector<real> generateLagrangeWeights( int pts ) {
+    real delta = 1.0/(pts-1.0);
     Matrix vandermonde = Matrix( pts, pts, 1 );
     Matrix b = Matrix( pts );
 
@@ -16,7 +16,7 @@ std::vector<double> generateLagrangeWeights( int pts ) {
 
     Matrix weights = solveLUDecomp( vandermonde, b );
 
-    std::vector<double> weights_v;
+    std::vector<real> weights_v;
     weights_v.reserve(weights.nrows());
     for ( size_t i = 0; i < weights.nrows(); i++ ) weights_v.push_back( weights.at(i) );
 

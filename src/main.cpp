@@ -15,7 +15,7 @@ int main(int argc, char* argv[]) {
     }, 6);
     //Matrix B = Matrix({ 30, 10, 10, -10, 0, 5 });
 
-    double alpha = 0.15;
+    real alpha = 0.15;
 
     std::cout <<  termcolor::cyan << "================ Exercicio 1 ( a = " << alpha << " ) ================" << termcolor::reset << std::endl;
     A = A * alpha;
