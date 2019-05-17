@@ -2,10 +2,6 @@
 
 #include <Definitions.hpp>
 
-// Defines a type named "function" which is a pointer to a function that takes 
-// a real and returns a real.
-typedef real(*Function)(real);
-
 enum IntegrationMethod { Polinomial, Quadrature };
 
 /**

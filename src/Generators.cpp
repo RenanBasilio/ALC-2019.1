@@ -9,7 +9,7 @@ std::vector<real> generateLagrangeWeights( int pts ) {
 
     for ( int i = 0; i < pts; i++ ) {
         for ( int j = 0; j < pts; j++) {
-            vandermonde.at( i, j ) = std::pow( 0 + (j*delta), i);
+            vandermonde.at( i, j ) = std::pow( (j*delta), i);
         }
         b.at(i) = ( std::pow(1, i+1) - std::pow(0, i+1) ) / (i + 1);
     }
