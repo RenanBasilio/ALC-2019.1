@@ -2,7 +2,12 @@
 
 Este repositório contém os trabalhos produzidos para a disciplina COC473 - Álgebra Linear Computacional no período de 2019/1 da UFRJ.
 
-O repositório utiliza a suite de testes unitários [googletest](https://github.com/google/googletest).
+O repositório utiliza a suite de testes unitários [googletest](https://github.com/google/googletest) como submódulo.
+Para obter os submódulos faça o pull com a flag ```--recurse-submodules```, ou, caso já possua o repositório clonado, execute o comando 
+
+```
+git submodule update --recursive
+```
 
 ## Instruções para Compilação
 
