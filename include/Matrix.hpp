@@ -21,9 +21,9 @@ private:
 
 public:
     Matrix() {};
-    Matrix(const size_t rows, const size_t columns = 1, const real value = 0.0);
+    explicit Matrix(const size_t rows, const size_t columns = 1, const real value = 0.0);
     //Matrix(const std::initializer_list<real> data, size_t rows = 0, size_t columns = 1);
-    Matrix(const std::vector<std::vector<real>> data, size_t rows = 0, size_t columns = 0);
+    explicit Matrix(const std::vector<std::vector<real>> data, size_t rows = 0, size_t columns = 0);
     //Matrix(const std::initializer_list<std::initializer_list<real>> data, size_t rows = 0, size_t columns = 0);
 
     ~Matrix();

@@ -1,6 +1,7 @@
 #include <Generators.hpp>
 #include <LinearAlgebra.hpp>
 #include <cmath>
+#include <iostream>
 
 std::vector<real> generateLagrangeWeights( int pts ) {
     real delta = 1.0/(pts-1.0);
@@ -9,11 +10,11 @@ std::vector<real> generateLagrangeWeights( int pts ) {
 
     for ( int i = 0; i < pts; i++ ) {
         for ( int j = 0; j < pts; j++) {
-            vandermonde.at( i, j ) = std::pow( (j*delta), i);
+            vandermonde.at( i, j ) = pow( (j*delta), i);
         }
-        b.at(i) = ( std::pow(1, i+1) - std::pow(0, i+1) ) / (i + 1);
+        b.at(i) = ( pow(1, i+1) - pow(0, i+1) ) / (i + 1);
     }
-
+    std::cout << determinant(vandermonde) << std::endl;
     Matrix weights = solveLUDecomp( vandermonde, b );
 
     std::vector<real> weights_v;

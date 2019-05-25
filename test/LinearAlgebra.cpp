@@ -195,5 +195,5 @@ TEST(MatrixOperations, Determinant) {
         { 2.0, 0.0, -1.0}
     });
 
-    EXPECT_DOUBLE_EQ(determinant(mtx), 18);
+    EXPECT_DOUBLE_EQ(static_cast<double>(determinant(mtx)), 18);
 }

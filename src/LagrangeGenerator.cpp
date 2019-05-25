@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <iomanip>
+#include <limits>
 #include <Generators.hpp>
 
 static void show_usage( std::string name ) {
@@ -40,7 +41,7 @@ int main(int argc, char const *argv[])
 
     std::ostream& out = ( file.is_open() ? file : std::cout );
 
-    out << std::setprecision(20);
+    out << std::setprecision(std::numeric_limits<real>::max_digits10);
 
     out << "#include <Definitions.hpp>" << std::endl 
         << "#include <vector>" << std::endl 

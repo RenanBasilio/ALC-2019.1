@@ -64,7 +64,7 @@ Matrix transformMatrix( Form t, Matrix& A, int& p) {
     for (size_t i = 0; i < A.ncolumns(); i++) {
 
         // Pivotamento
-        if (std::fabs(A.at(i, i)) == 0.0) {
+        if (fabs(A.at(i, i)) == 0.0) {
             for(size_t j = i; j < A.nrows(); j++) {
                 if (A.at(j, i) != 0.0) {
                     A.swapRow(i, j);
@@ -153,9 +153,9 @@ Matrix solveCholeskyDecomp( Matrix A, const Matrix& b) {
     for (size_t i = 0; i < A.nrows(); i++) {
         real sum = 0.0;
         for (size_t j = 0; j < i; j++) {
-            sum += std::pow(L.at(i, j), 2);
+            sum += pow(L.at(i, j), 2);
         }
-        L.at(i,i) = std::sqrt(A.at(i,i) - sum);
+        L.at(i,i) = sqrt(A.at(i,i) - sum);
 
         for (size_t j = i; j < A.nrows(); j++) {
             sum = 0.0;
@@ -176,7 +176,7 @@ real computeResidue( const Matrix& v1, const Matrix& v2 ) {
 }
 
 real computeResidue( const real& v1, const real& v2 ) {
-    return std::fabs( v1 - v2 ) / std::fabs( v1 );
+    return fabs( v1 - v2 ) / fabs( v1 );
 }
 
 
@@ -266,9 +266,9 @@ bool checkJacobiConvergence ( const Matrix& A, const real tol, std::pair<size_t,
     for (size_t i = 0; i < A.nrows(); i++) {
         for (size_t j = i; j < A.ncolumns(); j++) {
             if ( j != i ) {
-                if ( std::fabs(A.at(i, j)) > tol ) pass = false;
-                if ( std::fabs(A.at(i, j)) > greatest ) {
-                    greatest = std::fabs(A.at(i, j));
+                if ( fabs(A.at(i, j)) > tol ) pass = false;
+                if ( fabs(A.at(i, j)) > greatest ) {
+                    greatest = fabs(A.at(i, j));
                     next.first = i;
                     next.second = j;
                 }
@@ -292,13 +292,13 @@ std::pair<Matrix, Matrix> computeEigen ( Matrix A, const real tol ) {
     while ( !checkJacobiConvergence( A, tol, next ) ) {
         real phi = M_PI_4;
         if ( A.at(next.first, next.first) != A.at(next.second, next.second) ) {
-            phi = std::atan( 2*A.at(next.first, next.second) / (A.at(next.first, next.first) - A.at(next.second, next.second)) ) / 2;
+            phi = atan( 2*A.at(next.first, next.second) / (A.at(next.first, next.first) - A.at(next.second, next.second)) ) / 2;
         }
         Matrix P = Matrix::Identity( A.nrows() );
-        P.at(next.first, next.first) = std::cos(phi);
-        P.at(next.second, next.second) = std::cos(phi);
-        P.at(next.first, next.second) = -std::sin(phi);
-        P.at(next.second, next.first) = std::sin(phi);
+        P.at(next.first, next.first) = cos(phi);
+        P.at(next.second, next.second) = cos(phi);
+        P.at(next.first, next.second) = -sin(phi);
+        P.at(next.second, next.first) = sin(phi);
 
         A = P.transpose() * A * P;
         X = X * P;
@@ -318,5 +318,5 @@ real determinant( Matrix A ) {
     for ( size_t i = 0; i < A.nrows(); i++) {
         det *= A.at(i, i);
     }
-    return std::pow(-1, p) * det;
+    return pow(-1, p) * det;
 }

@@ -8,7 +8,7 @@ Matrix generateTestMatrix(size_t rows, size_t columns) {
 
     Matrix mtx = Matrix(rows, columns);
 
-    std::uniform_real_distribution<real> unif(0, 100);
+    std::uniform_real_distribution<double> unif(0, 100);
     std::default_random_engine re;
     for (size_t i = 0; i < rows; i++) {
         for (size_t j = 0; j < columns; j++) {
@@ -34,7 +34,6 @@ TEST(MatrixBasics, InitializeColumnVector) {
     for (size_t i = 0; i < 4; i++) {
         EXPECT_EQ(mtx.at(i, 0), val[i]) << mtx;
         EXPECT_EQ(mtx.at(i), val[i]) << mtx;
-        EXPECT_EQ(std::memcmp(mtx.getColumn(0).data(), val, sizeof(val)), 0) << mtx;
     }
 }
 
@@ -43,14 +42,13 @@ TEST(MatrixBasics, InitializeRowVector) {
     Matrix mtx = Matrix({{val[0], val[1], val[2], val[3], val[4], val[5], val[6]}});
     for (size_t i = 0; i < 7; i++) {
         EXPECT_EQ(mtx.at(0, i), val[i]) << mtx;
-        EXPECT_EQ(std::memcmp(mtx.getRow(0).data(), val, sizeof(val)), 0) << mtx;
     }
 }
 
 TEST(MatrixBasics, InitializeSquareMatrixAndAccessorOperator) {
 
     std::vector<std::vector<real>> val(5, std::vector<real>(5,0));
-    std::uniform_real_distribution<real> unif(0, 100);
+    std::uniform_real_distribution<double> unif(0, 100);
     std::default_random_engine re;
     for (size_t i = 0; i < 5; i++) {
         for (size_t j = 0; j < 5; j++) {

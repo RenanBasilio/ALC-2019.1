@@ -176,7 +176,7 @@ Matrix::operator std::string() const {
 bool Matrix::operator== (const Matrix& other) const {
     for ( size_t i = 0; i < _rows; i++) {
         for (size_t j = 0; j < _columns; j++) {
-            if ( std::fabs(at(i, j) - other.at(i, j)) >= 1E-3 ) return false;
+            if ( fabs(at(i, j) - other.at(i, j)) >= 1E-3 ) return false;
         }
     }
     return true;
@@ -355,8 +355,8 @@ real computeNorm( const Matrix& vec ) {
 
     real sum = 0.0;
     for ( size_t i = 0; i < vec.nrows(); i++ ) {
-        sum += std::pow(vec.at(i), 2);
+        sum += pow(vec.at(i), 2);
     }
 
-    return std::sqrt(sum);
+    return sqrt(sum);
 }
