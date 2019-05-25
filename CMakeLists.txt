@@ -47,6 +47,7 @@ set(
     src/LinearAlgebra.cpp
     src/Integration.cpp
     src/Generators.cpp
+    src/quadrature_weights_abscissae.cpp
 )
 
 # Set the name of the built executable

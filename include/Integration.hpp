@@ -5,24 +5,35 @@
 enum IntegrationMethod { Polinomial, Quadrature };
 
 /**
- * Calcula o valor da integral.
+ * Calcula numericamente o valor da integral.
  * 
  * @param f   A função a ser integrada.
- * @param x1  O limite de integração inferior
- * @param x2  O limite de integração superios
+ * @param a   O limite de integração inferior
+ * @param b   O limite de integração superios
  * @param pts O número de pontos de integração.
  * @param m   O método de integração.
  * @return    O valor da integral numérica da função.
  */
-real computeIntegral( Function f, real x1, real x2, size_t pts, IntegrationMethod m );
+real computeIntegral( Function f, real a, real b, size_t pts, IntegrationMethod m );
 
 /**
- * Calcula o valor da integral utilizando o metodo polinomial.
+ * Calcula numericamente o valor da integral utilizando o metodo polinomial.
  * 
  * @param f   A função a ser integrada.
- * @param x1  O limite de integração inferior
- * @param x2  O limite de integração superios
+ * @param a   O limite de integração inferior
+ * @param b   O limite de integração superios
  * @param pts O número de pontos de integração.
  * @return    O valor da integral numérica da função.
  */
-real computeIntegralPolinomial( Function f, real x1, real x2, size_t pts );
+real computeIntegralPolinomial( Function f, real a, real b, size_t pts );
+
+/**
+ * Calcula numericamente o valor da integral utilizando o metodo da quadratura de gauss.
+ * 
+ * @param f   A função a ser integrada.
+ * @param a   O limite de integração inferior
+ * @param b   O limite de integração superios
+ * @param pts O número de pontos de integração.
+ * @return    O valor da integral numérica da função.
+ */
+real computeIntegralQuadrature( Function f, real a, real b, size_t pts );
