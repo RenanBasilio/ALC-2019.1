@@ -17,18 +17,11 @@ TEST ( Integration, Polinomial ) {
 
 TEST ( Integration, Quadrature ) {
     Function f = [](real x)->real{ return (2 + x + 2*pow(x, 2)); };
-
-    EXPECT_NEAR( static_cast<double>( computeIntegral( f, 1, 3, 2, Quadrature)), 25.333, 1e-3 );
+    EXPECT_NEAR( static_cast<double>( computeIntegral( f, 1, 3, 2, Quadrature) ), 25.333, 1e-3 );
 
     f = [](real x)->real{ return exp((-1)*pow(x, 2)); };
-    EXPECT_NEAR( static_cast<double>( computeIntegral( f, 0, 1, 2, Quadrature)),  0.746, 1e-3 );
-
-    f = [](real x)->real{ return (log(1-x)/x); };
-    EXPECT_NEAR( static_cast<double>( computeIntegral( f, 0, 1, 10, Quadrature)), -pow(pi, 2)/6, 1e-2 );
+    EXPECT_NEAR( static_cast<double>( computeIntegral( f, 0, 1, 2, Quadrature) ),  0.746, 1e-3 );
 
     f = [](real x)->real{ return (log(1+x)/x); };
-    EXPECT_NEAR( static_cast<double>( computeIntegral( f, 0, 1, 10, Quadrature)), pow(pi, 2)/12, 1e-2 );
-
-    f = [](real x)->real{ return (log(1+pow(x, 2))/x); };
-    EXPECT_NEAR( static_cast<double>( computeIntegral( f, 0, 1, 10, Quadrature)), pow(pi, 2)/24, 1e-2 );
+    EXPECT_NEAR( static_cast<double>( computeIntegral( f, 0, 1, 10, Quadrature) ), pow(pi, 2)/12, 1e-2 );
 }

@@ -46,6 +46,7 @@ set(
     src/Matrix.cpp
     src/LinearAlgebra.cpp
     src/Integration.cpp
+    src/Differentials.cpp
     src/Generators.cpp
     src/quadrature_weights_abscissae.cpp
 )
@@ -80,6 +81,7 @@ if(BUILD_TESTS)
       test/Matrix.cpp
       test/LinearAlgebra.cpp
       test/Integration.cpp
+      test/Differentials.cpp
   )
 
   # Prevent overriding the parent project's compiler/linker

@@ -17,3 +17,20 @@
 // Defines a type named "Function" which is a pointer to a function which takes 
 // and returns a real.
 typedef real(*Function)(real);
+
+/**
+ * Defines a First Order Differential equation type.
+ * 
+ * @param t
+ * @param y(t)
+ */
+typedef real(*FirstOrderDifferential)(real, real);
+
+/**
+ * Defines a Second Order Differential equation type.
+ * 
+ * @param t
+ * @param y(t)
+ * @param y'(t)
+ */
+typedef real(*SecondOrderDifferential)(real, real, real);
