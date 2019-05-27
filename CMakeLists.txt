@@ -48,7 +48,7 @@ set(
     src/Integration.cpp
     src/Differentials.cpp
     src/Generators.cpp
-    src/quadrature_weights_abscissae.cpp
+    src/quadrature_abscissae_weights.cpp
 )
 
 # Set the name of the built executable

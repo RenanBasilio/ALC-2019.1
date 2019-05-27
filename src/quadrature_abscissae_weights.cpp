@@ -1,7 +1,7 @@
 #include <Definitions.hpp>
 #include <vector>
-extern const std::vector<std::vector<std::pair<real, real>>> quadrature_weights_abscissae;
-const std::vector<std::vector<std::pair<real, real>>> quadrature_weights_abscissae = { { {0, 0} }, { { 1, 1} },
+extern const std::vector<std::vector<std::pair<real, real>>> quadrature_abscissae_weights;
+const std::vector<std::vector<std::pair<real, real>>> quadrature_abscissae_weights = { { {0, 0} }, { { 1, 1} },
     { {-0.5773502691896257,1}, { 0.5773502691896257,1} },
     { {-0.7745966692414834,0.5555555555555556}, {0,0.8888888888888888}, {0.7745966692414834,0.5555555555555556} },
     { {-0.8611363115940526,0.3478548451374538}, {-0.3399810435848563,0.6521451548625461}, {0.3399810435848563,0.6521451548625461}, {0.8611363115940526,0.3478548451374538} },

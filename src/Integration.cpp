@@ -46,11 +46,11 @@ real computeIntegralQuadrature ( Function f, real a, real b, size_t pts ) {
     real len = b - a;
     real sum = 0;
     
-    extern const std::vector<std::vector<std::pair<real, real>>> quadrature_weights_abscissae;
-    const std::vector<std::pair<real, real>> weights_abscissae = quadrature_weights_abscissae.at(pts);
+    extern const std::vector<std::vector<std::pair<real, real>>> quadrature_abscissae_weights;
+    const std::vector<std::pair<real, real>> abscissae_weights = quadrature_abscissae_weights.at(pts);
 
     for ( size_t i = 0; i < pts; i++ ) {
-        sum += f( 0.5 * (a + b + weights_abscissae.at(i).first*len) ) * weights_abscissae.at(i).second;
+        sum += f( 0.5 * (a + b + abscissae_weights.at(i).first*len) ) * abscissae_weights.at(i).second;
     }
 
     return (len * sum)/2;
