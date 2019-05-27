@@ -49,7 +49,7 @@ TEST ( Differentials, RungeKutta_FourthOrder ) {
 }
 
 TEST ( Differentials, Taylor ) {
-    SecondOrderDifferential f = [](real t, real y, real yy)->real{ return -9.8-abs(yy)*yy; };
+    SecondOrderDifferential f = [](real t, real y, real yy)->real{ return -9.80665-abs(yy)*yy; };
 
     EXPECT_NEAR( static_cast<double>( computeDifferentialTaylor( f, 0.0, 0.0, 0.0, 0.0 , 0.1 ) ),  0.0, 1e-3 );
     EXPECT_NEAR( static_cast<double>( computeDifferentialTaylor( f, 0.0, 0.0, 0.0, 0.1 , 0.1 ) ), -0.0491, 1e-3 );
@@ -58,24 +58,24 @@ TEST ( Differentials, Taylor ) {
     EXPECT_NEAR( static_cast<double>( computeDifferentialTaylor( f, 0.0, 0.0, 0.0, 0.4 , 0.1 ) ), -0.6773, 1e-3 );
     EXPECT_NEAR( static_cast<double>( computeDifferentialTaylor( f, 0.0, 0.0, 0.0, 0.5 , 0.1 ) ), -0.9711, 1e-3 );
     EXPECT_NEAR( static_cast<double>( computeDifferentialTaylor( f, 0.0, 0.0, 0.0, 0.6 , 0.1 ) ), -1.2766, 1e-3 );
-    EXPECT_NEAR( static_cast<double>( computeDifferentialTaylor( f, 0.0, 0.0, 0.0, 0.7 , 0.1 ) ), -1.5869, 1e-2 );
-    EXPECT_NEAR( static_cast<double>( computeDifferentialTaylor( f, 0.0, 0.0, 0.0, 0.8 , 0.1 ) ), -1.8990, 1e-2 );
-    EXPECT_NEAR( static_cast<double>( computeDifferentialTaylor( f, 0.0, 0.0, 0.0, 0.9 , 0.1 ) ), -2.2118, 1e-2 );
-    EXPECT_NEAR( static_cast<double>( computeDifferentialTaylor( f, 0.0, 0.0, 0.0, 1.0 , 0.1 ) ), -2.5249, 1e-2 );
+    EXPECT_NEAR( static_cast<double>( computeDifferentialTaylor( f, 0.0, 0.0, 0.0, 0.7 , 0.1 ) ), -1.5869, 1e-3 );
+    EXPECT_NEAR( static_cast<double>( computeDifferentialTaylor( f, 0.0, 0.0, 0.0, 0.8 , 0.1 ) ), -1.8990, 1e-3 );
+    EXPECT_NEAR( static_cast<double>( computeDifferentialTaylor( f, 0.0, 0.0, 0.0, 0.9 , 0.1 ) ), -2.2118, 1e-3 );
+    EXPECT_NEAR( static_cast<double>( computeDifferentialTaylor( f, 0.0, 0.0, 0.0, 1.0 , 0.1 ) ), -2.5249, 1e-3 );
 }
 
-TEST ( Differentials, RungeKuttaNystron ) {
-    SecondOrderDifferential f = [](real t, real y, real yy)->real{ return -9.8-abs(yy)*yy; };
+TEST ( Differentials, RungeKuttaNystrom ) {
+    SecondOrderDifferential f = [](real t, real y, real yy)->real{ return -9.80665-abs(yy)*yy; };
 
-    EXPECT_NEAR( static_cast<double>( computeDifferentialRungeKuttaNystron( f, 0.0, 0.0, 0.0, 0.0 , 0.1 ) ),  0.0, 1e-3 );
-    EXPECT_NEAR( static_cast<double>( computeDifferentialRungeKuttaNystron( f, 0.0, 0.0, 0.0, 0.1 , 0.1 ) ), -0.0483, 1e-3 );
-    EXPECT_NEAR( static_cast<double>( computeDifferentialRungeKuttaNystron( f, 0.0, 0.0, 0.0, 0.2 , 0.1 ) ), -0.1846, 1e-3 );
-    EXPECT_NEAR( static_cast<double>( computeDifferentialRungeKuttaNystron( f, 0.0, 0.0, 0.0, 0.3 , 0.1 ) ), -0.3886, 1e-3 );
-    EXPECT_NEAR( static_cast<double>( computeDifferentialRungeKuttaNystron( f, 0.0, 0.0, 0.0, 0.4 , 0.1 ) ), -0.6382, 1e-3 );
-    EXPECT_NEAR( static_cast<double>( computeDifferentialRungeKuttaNystron( f, 0.0, 0.0, 0.0, 0.5 , 0.1 ) ), -0.9156, 1e-3 );
-    EXPECT_NEAR( static_cast<double>( computeDifferentialRungeKuttaNystron( f, 0.0, 0.0, 0.0, 0.6 , 0.1 ) ), -1.2091, 1e-3 );
-    EXPECT_NEAR( static_cast<double>( computeDifferentialRungeKuttaNystron( f, 0.0, 0.0, 0.0, 0.7 , 0.1 ) ), -1.5116, 1e-3 );
-    EXPECT_NEAR( static_cast<double>( computeDifferentialRungeKuttaNystron( f, 0.0, 0.0, 0.0, 0.8 , 0.1 ) ), -1.8191, 1e-3 );
-    EXPECT_NEAR( static_cast<double>( computeDifferentialRungeKuttaNystron( f, 0.0, 0.0, 0.0, 0.9 , 0.1 ) ), -2.1292, 1e-3 );
-    EXPECT_NEAR( static_cast<double>( computeDifferentialRungeKuttaNystron( f, 0.0, 0.0, 0.0, 1.0 , 0.1 ) ), -2.4408, 1e-3 );
+    EXPECT_NEAR( static_cast<double>( computeDifferentialRungeKuttaNystrom( f, 0.0, 0.0, 0.0, 0.0 , 0.1 ) ),  0.0, 1e-3 );
+    EXPECT_NEAR( static_cast<double>( computeDifferentialRungeKuttaNystrom( f, 0.0, 0.0, 0.0, 0.1 , 0.1 ) ), -0.0483, 1e-3 );
+    EXPECT_NEAR( static_cast<double>( computeDifferentialRungeKuttaNystrom( f, 0.0, 0.0, 0.0, 0.2 , 0.1 ) ), -0.1846, 1e-3 );
+    EXPECT_NEAR( static_cast<double>( computeDifferentialRungeKuttaNystrom( f, 0.0, 0.0, 0.0, 0.3 , 0.1 ) ), -0.3886, 1e-3 );
+    EXPECT_NEAR( static_cast<double>( computeDifferentialRungeKuttaNystrom( f, 0.0, 0.0, 0.0, 0.4 , 0.1 ) ), -0.6382, 1e-3 );
+    EXPECT_NEAR( static_cast<double>( computeDifferentialRungeKuttaNystrom( f, 0.0, 0.0, 0.0, 0.5 , 0.1 ) ), -0.9156, 1e-3 );
+    EXPECT_NEAR( static_cast<double>( computeDifferentialRungeKuttaNystrom( f, 0.0, 0.0, 0.0, 0.6 , 0.1 ) ), -1.2091, 1e-3 );
+    EXPECT_NEAR( static_cast<double>( computeDifferentialRungeKuttaNystrom( f, 0.0, 0.0, 0.0, 0.7 , 0.1 ) ), -1.5116, 1e-3 );
+    EXPECT_NEAR( static_cast<double>( computeDifferentialRungeKuttaNystrom( f, 0.0, 0.0, 0.0, 0.8 , 0.1 ) ), -1.8191, 1e-3 );
+    EXPECT_NEAR( static_cast<double>( computeDifferentialRungeKuttaNystrom( f, 0.0, 0.0, 0.0, 0.9 , 0.1 ) ), -2.1292, 1e-3 );
+    EXPECT_NEAR( static_cast<double>( computeDifferentialRungeKuttaNystrom( f, 0.0, 0.0, 0.0, 1.0 , 0.1 ) ), -2.4408, 1e-3 );
 }

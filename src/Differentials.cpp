@@ -56,7 +56,7 @@ real computeDifferentialTaylor( SecondOrderDifferential f, real x0, real y0, rea
     return y;
 }
 
-real computeDifferentialRungeKuttaNystron( SecondOrderDifferential f, real x0, real y0, real yy0, real x, real step ) {
+real computeDifferentialRungeKuttaNystrom( SecondOrderDifferential f, real x0, real y0, real yy0, real x, real step ) {
     real y = y0;
     real yy = yy0;
 
@@ -64,15 +64,17 @@ real computeDifferentialRungeKuttaNystron( SecondOrderDifferential f, real x0, r
         std::cout << y << " " << yy << std::endl;
         real q, l, k1, k2, k3, k4;
 
-        k1 = 1/2 * step * f( x0, y, yy );
-        q  = 1/2 * step * ( yy + 1/2 * k1 );
-        k2 = 1/2 * step * f( x0 + step/2, y + q, yy + k1 );
-        k3 = 1/2 * step * f( x0 + step/2, y + q, yy + k2 );
+        real v = f( x0, y, yy );
+
+        k1 = 0.5 * step * f( x0, y, yy );
+        q  = 0.5 * step * ( yy + 0.5 * k1 );
+        k2 = 0.5 * step * f( x0 + step/2.0, y + q, yy + k1 );
+        k3 = 0.5 * step * f( x0 + step/2.0, y + q, yy + k2 );
         l  = step * ( yy + k3 );
-        k4 = 1/2 * step * f( x0 + step, y + l, yy + 2*k3 );
+        k4 = 0.5 * step * f( x0 + step, y + l, yy + 2.0*k3 );
         
-        y += step * ( yy + 1/3*( k1 + k2 + k3 ) );
-        yy += 1/3 * ( k1 + 2*k2 + 2*k3 + k4 );
+        y += step * ( yy + 1.0/3.0*( k1 + k2 + k3 ) );
+        yy += 1.0/3.0 * ( k1 + 2.0*k2 + 2.0*k3 + k4 );
         x0 += step;
     }
 

@@ -65,4 +65,4 @@ real computeDifferentialTaylor( SecondOrderDifferential f, real x0, real y0, rea
  * @param  step The integration step
  * @return The value of y(x)
  */
-real computeDifferentialRungeKuttaNystron( SecondOrderDifferential f, real x0, real y0, real yy0, real x, real step );
+real computeDifferentialRungeKuttaNystrom( SecondOrderDifferential f, real x0, real y0, real yy0, real x, real step );
