@@ -9,9 +9,10 @@
  * @param  y0   The initial value of y
  * @param  x    The target x
  * @param  step The integration step
+ * @param verbose    Verbosely output all points between x0 and x
  * @return The value of y(x)
  */
-real computeDifferentialEuler( FirstOrderDifferential f, real x0, real y0, real x, real step );
+real computeDifferentialEuler( FirstOrderDifferential f, real x0, real y0, real x, real step, bool verbose = false );
 
 /**
  * Numerically solves for the value of a first order differential equation using
@@ -22,9 +23,10 @@ real computeDifferentialEuler( FirstOrderDifferential f, real x0, real y0, real 
  * @param  y0   The initial value of y
  * @param  x    The target x
  * @param  step The integration step
+ * @param verbose    Verbosely output all points between x0 and x
  * @return The value of y(x)
  */
-real computeDifferentialRungeKutta_SecondOrder ( FirstOrderDifferential f, real x0, real y0, real x, real step );
+real computeDifferentialRungeKutta_SecondOrder ( FirstOrderDifferential f, real x0, real y0, real x, real step, bool verbose = false );
 
 /**
  * Numerically solves for the value of a first order differential equation using
@@ -35,9 +37,10 @@ real computeDifferentialRungeKutta_SecondOrder ( FirstOrderDifferential f, real 
  * @param  y0   The initial value of y
  * @param  x    The target x
  * @param  step The integration step
+ * @param verbose    Verbosely output all points between x0 and x
  * @return The value of y(x)
  */
-real computeDifferentialRungeKutta_FourthOrder ( FirstOrderDifferential f, real x0, real y0, real x, real step );
+real computeDifferentialRungeKutta_FourthOrder ( FirstOrderDifferential f, real x0, real y0, real x, real step, bool verbose = false );
 
 /**
  * Numerically solves for the value of a second order differential equation using
@@ -49,9 +52,10 @@ real computeDifferentialRungeKutta_FourthOrder ( FirstOrderDifferential f, real 
  * @param  yy0  The initial value of y'
  * @param  x    The target x
  * @param  step The integration step
+ * @param verbose    Verbosely output all points between x0 and x
  * @return The value of y(x)
  */
-real computeDifferentialTaylor( SecondOrderDifferential f, real x0, real y0, real yy0, real x, real step );
+real computeDifferentialTaylor( SecondOrderDifferential f, real x0, real y0, real yy0, real x, real step, bool verbose = false );
 
 /**
  * Numerically solves for the value of a second order differential equation using
@@ -63,6 +67,7 @@ real computeDifferentialTaylor( SecondOrderDifferential f, real x0, real y0, rea
  * @param  yy0  The initial value of y'
  * @param  x    The target x
  * @param  step The integration step
+ * @param verbose    Verbosely output all points between x0 and x
  * @return The value of y(x)
  */
-real computeDifferentialRungeKuttaNystrom( SecondOrderDifferential f, real x0, real y0, real yy0, real x, real step );
+real computeDifferentialRungeKuttaNystrom( SecondOrderDifferential f, real x0, real y0, real yy0, real x, real step, bool verbose = false );

@@ -4,7 +4,11 @@
 #include <iostream>
 
 std::vector<real> generateLagrangeWeights( int pts ) {
-    real delta = 1.0/(pts-1.0);
+    return generateLagrangeWeights(pts, 0, 1);
+}
+
+std::vector<real> generateLagrangeWeights( int pts, real x1, real x2 ) {
+    real delta = (x2 - x1)/(pts-1.0);
     Matrix vandermonde = Matrix( pts, pts, 1 );
     Matrix b = Matrix( pts );
 
@@ -12,9 +16,8 @@ std::vector<real> generateLagrangeWeights( int pts ) {
         for ( int j = 0; j < pts; j++) {
             vandermonde.at( i, j ) = pow( (j*delta), i);
         }
-        b.at(i) = ( pow(1, i+1) - pow(0, i+1) ) / (i + 1);
+        b.at(i) = ( pow(x2, i+1) - pow(x1, i+1) ) / (i + 1);
     }
-    std::cout << determinant(vandermonde) << std::endl;
     Matrix weights = solveLUDecomp( vandermonde, b );
 
     std::vector<real> weights_v;

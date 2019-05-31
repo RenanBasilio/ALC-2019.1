@@ -22,12 +22,12 @@ real computeIntegral( Function f, real x1, real x2, size_t pts, IntegrationMetho
 real computeIntegralPolinomial ( Function f, real a, real b, size_t pts ) {
     if (pts == 1) return f( (a + b)/2 );
 
-    real delta = (b - a)/(pts-1.0);
+    real delta = (b - a)/(pts - 1);
     real sum = 0;
 
     std::vector<real> weights;
     #ifndef USE_LAGRANGE_WEIGHTS_TABLE
-        weights = generateLagrangeWeights( pts );
+        weights = generateLagrangeWeights( pts, a, b );
     #else
         extern const std::vector<std::vector<real>> lagrange_weights;
         if ( pts <= lagrange_weights.size() ) weights = lagrange_weights.at( pts );
